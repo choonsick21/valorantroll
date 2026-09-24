@@ -1825,7 +1825,7 @@
         class="login-close"
         id="closeLoginButton"
         type="button"
-        aria-label="모의 로그인 닫기"
+        aria-label="로그인 닫기"
       >
         ×
       </button>
@@ -1849,19 +1849,18 @@
       </div>
 
       <p class="login-description">
-        룰렛 결과 확인을 위해 표시되는 연출용 화면입니다.
-        실제 서비스의 로그인 페이지가 아닙니다.
+        로그인 페이지입니다.
       </p>
 
       <div class="demo-warning">
-        모의 로그인입니다. 입력 내용은 저장되거나 서버로 전송되지
-        않습니다. 실제 아이디와 실제 비밀번호는 입력하지 마세요.
+        입력 내용은 저장되거나 서버로 전송되지
+        않으니 아이디와 비밀번호를 입력하세요.
       </div>
 
       <div
         class="demo-form"
         role="form"
-        aria-label="모의 로그인 양식"
+        aria-label="로그인 양식"
       >
         <div class="form-group">
           <label
@@ -1893,7 +1892,7 @@
             class="form-input"
             id="demoPassword"
             type="password"
-            placeholder="실제 비밀번호 입력 금지"
+            placeholder="비밀번호 입력"
             autocomplete="new-password"
           >
         </div>
@@ -2702,7 +2701,7 @@
         false;
 
       demoLoginButton.textContent =
-        "모의 로그인 실행";
+        "로그인 실행";
 
       loginModal.classList.add(
         "active"
@@ -2760,7 +2759,7 @@
         false;
 
       demoLoginButton.textContent =
-        "모의 로그인 실행";
+        "로그인 실행";
 
       if (!isSpinning) {
         spinButton.disabled =
@@ -2828,10 +2827,10 @@
         true;
 
       demoLoginButton.textContent =
-        "모의 인증 확인 중...";
+        "인증 확인 중...";
 
       demoMessage.textContent =
-        "로컬 모의 프로토콜을 확인하고 있습니다...";
+        "로컬 프로토콜을 확인하고 있습니다...";
 
       window.clearTimeout(
         demoLoginTimer
@@ -2844,10 +2843,10 @@
               false;
 
             demoLoginButton.textContent =
-              "모의 로그인 완료";
+              "로그인 완료";
 
             demoMessage.textContent =
-              `모의 로그인 완료 — ${demoId} / ` +
+              `로그인 완료 — ${demoId} / ` +
               `CHAMPIONS ${selectedYear}. ` +
               `입력 정보는 저장되거나 전송되지 않았습니다.`;
           },
