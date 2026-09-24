@@ -1,34 +1,50 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-  <meta charset="UTF-8" />
+  <meta charset="UTF-8">
+
   <meta
     name="viewport"
     content="width=device-width, initial-scale=1.0"
-  />
+  >
 
-  <title>Champions Roulette</title>
+  <meta
+    name="theme-color"
+    content="#080c12"
+  >
+
+  <title>CHAMPIONS // Roulette Protocol</title>
 
   <style>
+    /* ==================================================
+       기본 설정
+    ================================================== */
+
     :root {
-      --background: #050809;
-      --panel: #101718;
-      --panel-light: #172021;
-      --text: #f5f7f6;
-      --muted: #8e9b97;
-      --line: rgba(255, 255, 255, 0.12);
+      --background: #080c12;
+      --background-deep: #04070b;
+      --panel: #111923;
+      --panel-light: #18242f;
+
       --red: #ff4655;
-      --red-light: #ff6571;
-      --green: #caff3d;
-      --cyan: #48ffe1;
-      --orange: #ff9e3d;
-      --wheel-size: min(72vw, 570px);
+      --red-dark: #c92f3d;
+
+      --cream: #ece8e1;
+      --white: #ffffff;
+      --cyan: #67e3e6;
+      --green: #65e393;
+
+      --text: #ece8e1;
+      --text-soft: #9ca8b3;
+      --text-muted: #687581;
+
+      --line: rgba(236, 232, 225, 0.14);
+
+      --header-height: 74px;
     }
 
     * {
       box-sizing: border-box;
-      margin: 0;
-      padding: 0;
     }
 
     html {
@@ -36,66 +52,36 @@
     }
 
     body {
+      margin: 0;
+      min-width: 320px;
       min-height: 100vh;
       overflow-x: hidden;
+
       color: var(--text);
+
+      background:
+        radial-gradient(
+          circle at 14% 12%,
+          rgba(255, 70, 85, 0.13),
+          transparent 29%
+        ),
+        radial-gradient(
+          circle at 86% 72%,
+          rgba(103, 227, 230, 0.07),
+          transparent 29%
+        ),
+        var(--background);
+
       font-family:
+        Inter,
         Pretendard,
         "Noto Sans KR",
         Arial,
         sans-serif;
-      background:
-        radial-gradient(
-          circle at 15% 12%,
-          rgba(255, 70, 85, 0.16),
-          transparent 30%
-        ),
-        radial-gradient(
-          circle at 88% 38%,
-          rgba(72, 255, 225, 0.08),
-          transparent 25%
-        ),
-        var(--background);
     }
 
     body.modal-open {
       overflow: hidden;
-    }
-
-    body::before {
-      content: "";
-      position: fixed;
-      inset: 0;
-      z-index: -2;
-      pointer-events: none;
-      opacity: 0.16;
-      background-image:
-        linear-gradient(
-          rgba(255, 255, 255, 0.035) 1px,
-          transparent 1px
-        ),
-        linear-gradient(
-          90deg,
-          rgba(255, 255, 255, 0.035) 1px,
-          transparent 1px
-        );
-      background-size: 48px 48px;
-    }
-
-    body::after {
-      content: "";
-      position: fixed;
-      inset: 0;
-      z-index: 1000;
-      pointer-events: none;
-      opacity: 0.025;
-      background: repeating-linear-gradient(
-        0deg,
-        transparent 0,
-        transparent 2px,
-        white 3px,
-        transparent 4px
-      );
     }
 
     button,
@@ -104,2338 +90,2907 @@
     }
 
     button {
-      border: 0;
+      color: inherit;
     }
 
     button:focus-visible,
-    input:focus-visible {
-      outline: 3px solid rgba(202, 255, 61, 0.55);
-      outline-offset: 3px;
+    input:focus-visible,
+    a:focus-visible {
+      outline: 2px solid var(--cyan);
+      outline-offset: 4px;
     }
 
-    .container {
-      width: min(1160px, calc(100% - 40px));
-      margin: 0 auto;
+    img,
+    svg {
+      display: block;
     }
 
-    /* =========================
-       상단 메뉴
-    ========================= */
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
 
-    .header {
+    ::selection {
+      color: white;
+      background: var(--red);
+    }
+
+    /* ==================================================
+       배경 장식
+    ================================================== */
+
+    .background-grid {
+      position: fixed;
+      inset: 0;
+      z-index: -5;
+
+      pointer-events: none;
+      opacity: 0.16;
+
+      background-image:
+        linear-gradient(
+          rgba(255, 255, 255, 0.045) 1px,
+          transparent 1px
+        ),
+        linear-gradient(
+          90deg,
+          rgba(255, 255, 255, 0.045) 1px,
+          transparent 1px
+        );
+
+      background-size: 80px 80px;
+
+      mask-image:
+        linear-gradient(
+          to bottom,
+          black,
+          transparent 95%
+        );
+    }
+
+    .background-diamond {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      z-index: -4;
+
+      width: min(70vw, 950px);
+      aspect-ratio: 1;
+
+      transform:
+        translate(-50%, -50%)
+        rotate(45deg);
+
+      pointer-events: none;
+
+      border: 1px solid rgba(255, 70, 85, 0.11);
+
+      box-shadow:
+        inset 0 0 110px rgba(255, 70, 85, 0.025),
+        0 0 110px rgba(255, 70, 85, 0.025);
+    }
+
+    .noise {
+      position: fixed;
+      inset: 0;
+      z-index: 9000;
+
+      pointer-events: none;
+      opacity: 0.025;
+
+      background-image:
+        repeating-radial-gradient(
+          circle at 0 0,
+          transparent 0,
+          rgba(255, 255, 255, 0.9) 1px,
+          transparent 2px
+        );
+
+      background-size: 9px 9px;
+      mix-blend-mode: overlay;
+    }
+
+    .scan-line {
+      position: fixed;
+      top: -12%;
+      left: 0;
+      z-index: 50;
+
+      width: 100%;
+      height: 8%;
+
+      pointer-events: none;
+      opacity: 0.035;
+
+      background:
+        linear-gradient(
+          to bottom,
+          transparent,
+          white,
+          transparent
+        );
+
+      animation: pageScan 10s linear infinite;
+    }
+
+    @keyframes pageScan {
+      to {
+        transform: translateY(1450%);
+      }
+    }
+
+    /* ==================================================
+       헤더
+    ================================================== */
+
+    .site-header {
       position: fixed;
       top: 0;
       left: 0;
       z-index: 100;
-      width: 100%;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-      background: rgba(5, 8, 9, 0.8);
-      backdrop-filter: blur(18px);
-    }
 
-    .navigation {
-      min-height: 70px;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 20px;
+
+      width: 100%;
+      height: var(--header-height);
+      padding: 0 5vw;
+
+      background:
+        linear-gradient(
+          to bottom,
+          rgba(8, 12, 18, 0.98),
+          rgba(8, 12, 18, 0.79)
+        );
+
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+
+      backdrop-filter: blur(16px);
     }
 
-    .logo {
+    .brand {
       display: flex;
       align-items: center;
-      gap: 12px;
-      color: white;
-      text-decoration: none;
+      gap: 13px;
     }
 
-    .logo-mark {
-      width: 38px;
-      height: 38px;
-      display: grid;
-      place-items: center;
-      color: white;
-      font-size: 1.15rem;
-      font-weight: 900;
+    .brand-mark {
+      position: relative;
+
+      width: 35px;
+      height: 30px;
+      flex: 0 0 auto;
+    }
+
+    .brand-mark::before,
+    .brand-mark::after {
+      content: "";
+
+      position: absolute;
+      top: 4px;
+
+      width: 15px;
+      height: 22px;
+
       background: var(--red);
-      clip-path: polygon(
-        0 0,
-        100% 0,
-        100% 72%,
-        72% 100%,
-        0 100%
-      );
-      box-shadow: 0 0 25px rgba(255, 70, 85, 0.42);
     }
 
-    .logo-text strong {
+    .brand-mark::before {
+      left: 2px;
+
+      clip-path:
+        polygon(
+          0 0,
+          100% 19%,
+          100% 100%,
+          0 60%
+        );
+    }
+
+    .brand-mark::after {
+      right: 2px;
+
+      clip-path:
+        polygon(
+          0 19%,
+          100% 0,
+          100% 60%,
+          0 100%
+        );
+    }
+
+    .brand-name {
       display: block;
+
       font-size: 0.9rem;
-      letter-spacing: 0.06em;
-    }
-
-    .logo-text small {
-      display: block;
-      margin-top: 3px;
-      color: var(--muted);
-      font-size: 0.55rem;
-      font-weight: 700;
-      letter-spacing: 0.14em;
-    }
-
-    .server-status {
-      display: flex;
-      align-items: center;
-      gap: 9px;
-      color: #aeb8b5;
-      font-family: monospace;
-      font-size: 0.74rem;
-      font-weight: 700;
+      font-weight: 950;
       letter-spacing: 0.1em;
     }
 
-    .server-dot {
-      width: 8px;
-      height: 8px;
-      border-radius: 50%;
-      background: var(--green);
-      box-shadow: 0 0 12px var(--green);
-      animation: pulse 1.4s infinite;
+    .brand-subtitle {
+      display: block;
+      margin-top: 3px;
+
+      color: var(--text-muted);
+
+      font-size: 0.54rem;
+      font-weight: 850;
+      letter-spacing: 0.2em;
     }
 
-    /* =========================
+    .system-status {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+
+      color: #b4bec7;
+
+      font-size: 0.63rem;
+      font-weight: 900;
+      letter-spacing: 0.14em;
+    }
+
+    .system-status-dot {
+      width: 7px;
+      height: 7px;
+
+      background: var(--green);
+      border-radius: 50%;
+
+      box-shadow: 0 0 12px var(--green);
+
+      animation: statusBlink 1.8s ease-in-out infinite;
+    }
+
+    @keyframes statusBlink {
+      50% {
+        opacity: 0.3;
+      }
+    }
+
+    /* ==================================================
        메인 화면
-    ========================= */
+    ================================================== */
 
     .hero {
-      min-height: 100vh;
-      padding: 120px 0 70px;
-      display: grid;
-      align-items: center;
-      overflow: hidden;
       position: relative;
+
+      display: grid;
+      place-items: center;
+
+      min-height: 100vh;
+      padding:
+        calc(var(--header-height) + 70px)
+        6vw
+        75px;
+
+      overflow: hidden;
     }
 
     .hero::before {
       content: "CHAMPIONS";
+
       position: absolute;
       top: 50%;
       left: 50%;
       z-index: -1;
-      color: rgba(255, 255, 255, 0.02);
-      font-size: clamp(6rem, 18vw, 17rem);
-      font-weight: 900;
-      letter-spacing: -0.08em;
+
+      transform: translate(-50%, -50%);
+
+      color: transparent;
+      opacity: 0.055;
+
+      font-size: clamp(8rem, 23vw, 24rem);
+      font-weight: 1000;
+      letter-spacing: -0.04em;
       white-space: nowrap;
-      transform: translate(-50%, -50%) rotate(-7deg);
+
+      -webkit-text-stroke: 1px white;
     }
 
-    .hero-grid {
-      display: grid;
-      grid-template-columns: 1.05fr 0.95fr;
+    .hero-side-text {
+      position: absolute;
+      left: 3vw;
+      bottom: 11%;
+
+      display: flex;
       align-items: center;
-      gap: 70px;
+      gap: 12px;
+
+      color: rgba(255, 255, 255, 0.24);
+
+      font-size: 0.54rem;
+      font-weight: 900;
+      letter-spacing: 0.28em;
+
+      transform: rotate(-90deg);
+      transform-origin: left center;
+    }
+
+    .hero-side-text::before {
+      content: "";
+
+      width: 76px;
+      height: 1px;
+
+      background: rgba(255, 255, 255, 0.25);
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 2;
+
+      width: min(1120px, 100%);
+
+      text-align: center;
     }
 
     .eyebrow {
-      margin-bottom: 22px;
       display: flex;
       align-items: center;
-      gap: 11px;
-      color: var(--green);
-      font-size: 0.76rem;
-      font-weight: 900;
-      letter-spacing: 0.16em;
+      justify-content: center;
+      gap: 14px;
+
+      margin-bottom: 27px;
+
+      color: var(--red);
+
+      font-size: 0.68rem;
+      font-weight: 950;
+      letter-spacing: 0.3em;
     }
 
-    .eyebrow::before {
+    .eyebrow::before,
+    .eyebrow::after {
       content: "";
-      width: 36px;
-      height: 2px;
-      background: var(--green);
-      box-shadow: 0 0 10px rgba(202, 255, 61, 0.45);
+
+      width: 54px;
+      height: 1px;
+
+      background: var(--red);
     }
+
+    /*
+      R 글자와 외곽선이 겹치지 않도록
+      음수 자간을 최소화하고 충분한 내부 여백을 사용합니다.
+    */
 
     .hero-title {
-      font-size: clamp(3.5rem, 7vw, 7rem);
-      font-weight: 900;
+      width: 100%;
+      margin: 0;
+      padding: 0.08em 0.16em 0.13em;
+
+      overflow: visible;
+
+      font-size: clamp(3.4rem, 10vw, 9rem);
+      font-weight: 1000;
       line-height: 0.92;
-      letter-spacing: -0.065em;
+      letter-spacing: -0.015em;
+      text-transform: uppercase;
     }
 
-    .hero-title span {
+    .hero-title-outline,
+    .hero-title-solid {
       display: block;
+
+      width: 100%;
+      padding: 0.02em 0.06em;
+
+      overflow: visible;
+      white-space: nowrap;
     }
 
-    .hero-title .outline {
+    .hero-title-outline {
       color: transparent;
-      -webkit-text-stroke: 1.5px rgba(255, 255, 255, 0.8);
+
+      -webkit-text-stroke:
+        1px rgba(236, 232, 225, 0.62);
+
+      paint-order: stroke fill;
     }
 
-    .hero-title .red {
-      color: var(--red);
-      text-shadow: 0 0 40px rgba(255, 70, 85, 0.25);
+    .hero-title-solid {
+      margin-top: 0.04em;
+
+      color: var(--cream);
+
+      text-shadow:
+        0 20px 60px rgba(0, 0, 0, 0.55);
     }
 
-    .collaboration {
-      margin-top: 27px;
-      font-size: 1.2rem;
-      font-weight: 900;
-    }
+    .hero-description {
+      width: min(670px, 100%);
+      margin: 27px auto 0;
 
-    .collaboration span {
-      padding: 0 9px;
-      color: var(--red);
-    }
+      color: var(--text-soft);
 
-    .description {
-      max-width: 580px;
-      margin-top: 17px;
-      color: var(--muted);
-      line-height: 1.75;
+      font-size: clamp(0.85rem, 1.7vw, 1rem);
+      line-height: 1.9;
       word-break: keep-all;
     }
 
     .hero-actions {
-      margin-top: 33px;
       display: flex;
-      flex-wrap: wrap;
-      gap: 12px;
+      justify-content: center;
+
+      margin-top: 40px;
     }
 
-    .primary-button,
-    .secondary-button {
-      min-height: 57px;
-      padding: 0 27px;
+    /* ==================================================
+       메인 버튼
+    ================================================== */
+
+    .protocol-button {
+      position: relative;
+
+      min-width: 255px;
+      padding: 5px;
+
       cursor: pointer;
-      font-weight: 900;
-      transition:
-        transform 0.2s ease,
-        background 0.2s ease,
-        border-color 0.2s ease;
+
+      background: transparent;
+      border: 1px solid rgba(236, 232, 225, 0.62);
     }
 
-    .primary-button {
+    .protocol-button::after {
+      content: "";
+
+      position: absolute;
+      right: -1px;
+      bottom: -1px;
+
+      width: 28px;
+      height: 8px;
+
+      pointer-events: none;
+
+      background: var(--background);
+      border-left: 1px solid rgba(236, 232, 225, 0.62);
+    }
+
+    .protocol-button-inner {
+      position: relative;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+
+      min-height: 58px;
+      padding: 0 28px;
+
+      overflow: hidden;
+
       color: white;
       background: var(--red);
-      clip-path: polygon(
-        0 0,
-        calc(100% - 13px) 0,
-        100% 13px,
-        100% 100%,
-        13px 100%,
-        0 calc(100% - 13px)
-      );
+
+      font-size: 0.76rem;
+      font-weight: 950;
+      letter-spacing: 0.15em;
     }
 
-    .primary-button:hover {
-      background: var(--red-light);
-      transform: translateY(-3px);
-    }
-
-    .secondary-button {
-      color: white;
-      border: 1px solid var(--line);
-      background: rgba(255, 255, 255, 0.04);
-    }
-
-    .secondary-button:hover {
-      border-color: rgba(255, 255, 255, 0.3);
-      background: rgba(255, 255, 255, 0.08);
-      transform: translateY(-3px);
-    }
-
-    /* =========================
-       전술 카드
-    ========================= */
-
-    .hero-visual {
-      min-height: 480px;
-      display: grid;
-      place-items: center;
-    }
-
-    .tactical-card {
-      width: min(100%, 410px);
-      aspect-ratio: 0.86;
-      display: grid;
-      place-items: center;
-      overflow: hidden;
-      position: relative;
-      border: 1px solid rgba(255, 255, 255, 0.13);
-      background:
-        linear-gradient(
-          145deg,
-          rgba(255, 70, 85, 0.22),
-          transparent 35%
-        ),
-        linear-gradient(
-          320deg,
-          rgba(72, 255, 225, 0.12),
-          transparent 35%
-        ),
-        #101718;
-      clip-path: polygon(
-        0 0,
-        87% 0,
-        100% 13%,
-        100% 100%,
-        13% 100%,
-        0 87%
-      );
-      box-shadow: 0 35px 90px rgba(0, 0, 0, 0.55);
-      animation: float 4s ease-in-out infinite;
-    }
-
-    .target-circle {
-      width: 245px;
-      height: 245px;
-      display: grid;
-      place-items: center;
-      position: relative;
-      border: 1px solid rgba(202, 255, 61, 0.38);
-      border-radius: 50%;
-      box-shadow:
-        0 0 0 35px rgba(202, 255, 61, 0.025),
-        0 0 0 70px rgba(202, 255, 61, 0.015);
-    }
-
-    .target-circle::before,
-    .target-circle::after {
+    .protocol-button-inner::before {
       content: "";
+
       position: absolute;
-      background: rgba(202, 255, 61, 0.35);
+      inset: 0;
+
+      pointer-events: none;
+
+      background: #111a23;
+
+      transform:
+        translateX(-105%)
+        skewX(-15deg);
+
+      transition: transform 0.35s ease;
     }
 
-    .target-circle::before {
-      width: 1px;
-      height: calc(100% + 65px);
+    .protocol-button:hover
+    .protocol-button-inner::before {
+      transform:
+        translateX(0)
+        skewX(-15deg);
     }
 
-    .target-circle::after {
-      width: calc(100% + 65px);
-      height: 1px;
-    }
-
-    .target-core {
+    .protocol-button-inner > * {
+      position: relative;
       z-index: 2;
-      width: 125px;
-      height: 125px;
-      display: grid;
-      place-items: center;
-      border: 11px solid var(--red);
-      border-radius: 50%;
-      color: white;
-      font-size: 3.5rem;
-      font-weight: 900;
-      background: #0a0f10;
-      box-shadow: 0 0 35px rgba(255, 70, 85, 0.42);
     }
 
-    .hud {
-      position: absolute;
-      color: var(--green);
-      font-family: monospace;
-      font-size: 0.68rem;
-      line-height: 1.6;
-      letter-spacing: 0.1em;
-    }
-
-    .hud.top {
-      top: 30px;
-      left: 30px;
-    }
-
-    .hud.bottom {
-      right: 30px;
-      bottom: 30px;
-      text-align: right;
-    }
-
-    /* =========================
-       룰렛 영역
-    ========================= */
+    /* ==================================================
+       룰렛 섹션
+    ================================================== */
 
     .roulette-section {
+      position: relative;
+
       min-height: 100vh;
-      padding: 105px 0;
-      border-top: 1px solid rgba(255, 255, 255, 0.07);
+      padding:
+        calc(var(--header-height) + 65px)
+        6vw
+        110px;
+
       background:
-        radial-gradient(
-          circle at 40% 50%,
-          rgba(255, 70, 85, 0.13),
-          transparent 38%
-        ),
-        rgba(5, 8, 9, 0.72);
+        linear-gradient(
+          to bottom,
+          transparent,
+          rgba(255, 255, 255, 0.018)
+        );
     }
 
-    .section-heading {
-      margin-bottom: 55px;
-      text-align: center;
+    .section-header {
+      display: flex;
+      align-items: end;
+      justify-content: space-between;
+      gap: 35px;
+
+      width: min(1250px, 100%);
+      margin: 0 auto 55px;
     }
 
-    .section-number {
+    .section-code {
+      margin-bottom: 11px;
+
       color: var(--red);
-      font-family: monospace;
-      font-size: 0.75rem;
-      font-weight: 700;
-      letter-spacing: 0.2em;
+
+      font-size: 0.65rem;
+      font-weight: 950;
+      letter-spacing: 0.25em;
     }
 
-    .section-heading h2 {
-      margin-top: 10px;
-      font-size: clamp(2.5rem, 6vw, 5rem);
-      line-height: 1;
-      letter-spacing: -0.05em;
+    .section-title {
+      margin: 0;
+
+      font-size: clamp(2.5rem, 6vw, 5.3rem);
+      font-weight: 1000;
+      line-height: 0.9;
+      letter-spacing: -0.035em;
     }
 
-    .section-heading p {
-      margin-top: 15px;
-      color: var(--muted);
+    .section-description {
+      width: min(420px, 100%);
+      margin: 0;
+
+      color: var(--text-muted);
+
+      font-size: 0.82rem;
+      line-height: 1.85;
+      word-break: keep-all;
     }
 
     .roulette-layout {
       display: grid;
-      grid-template-columns: minmax(0, 1fr) 330px;
+      grid-template-columns:
+        minmax(330px, 680px)
+        minmax(280px, 390px);
+
       align-items: center;
-      gap: 65px;
+      justify-content: center;
+      gap: clamp(38px, 7vw, 90px);
+
+      width: min(1250px, 100%);
+      margin: 0 auto;
     }
 
-    .wheel-zone {
-      min-height: calc(var(--wheel-size) + 90px);
-      display: grid;
-      place-items: center;
-    }
+    /* ==================================================
+       룰렛
+    ================================================== */
 
-    .wheel-frame {
-      width: calc(var(--wheel-size) + 30px);
-      height: calc(var(--wheel-size) + 30px);
-      display: grid;
-      place-items: center;
+    .wheel-area {
       position: relative;
-      border: 2px solid rgba(255, 255, 255, 0.15);
-      border-radius: 50%;
-      background: repeating-conic-gradient(
-        #323a3b 0deg 2deg,
-        #080b0c 2deg 10deg
-      );
-      box-shadow:
-        0 0 0 8px #080b0c,
-        0 25px 70px rgba(0, 0, 0, 0.65),
-        0 0 55px rgba(255, 70, 85, 0.17);
+
+      display: grid;
+      place-items: center;
+
+      width: min(52vw, 650px);
+      min-width: 330px;
+      aspect-ratio: 1;
+
+      margin: auto;
     }
 
-    .pointer {
+    .wheel-outer-ring {
       position: absolute;
-      top: -28px;
-      left: 50%;
-      z-index: 30;
-      width: 56px;
-      height: 78px;
-      background: linear-gradient(
-        135deg,
-        white 0 24%,
-        var(--red) 25%
-      );
-      clip-path: polygon(50% 100%, 0 0, 100% 0);
-      filter: drop-shadow(0 8px 10px rgba(0, 0, 0, 0.8));
-      transform: translateX(-50%);
+      inset: 0;
+
+      pointer-events: none;
+
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      border-radius: 50%;
     }
 
-    .wheel {
-      width: var(--wheel-size);
-      height: var(--wheel-size);
-      overflow: hidden;
-      position: relative;
-      border: 4px solid #080b0c;
+    .wheel-outer-ring::before {
+      content: "";
+
+      position: absolute;
+      inset: 4%;
+
+      border: 1px solid rgba(255, 255, 255, 0.07);
       border-radius: 50%;
-      background:
-        repeating-conic-gradient(
-          from -30deg,
-          rgba(255, 255, 255, 0.22) 0deg 0.7deg,
-          transparent 0.7deg 60deg
-        ),
-        conic-gradient(
-          from -30deg,
-          #ff4655 0deg 60deg,
-          #172223 60deg 120deg,
-          #d07827 120deg 180deg,
-          #20413e 180deg 240deg,
-          #a92836 240deg 300deg,
-          #293532 300deg 360deg
-        );
+    }
+
+    .wheel-outer-ring::after {
+      content: "";
+
+      position: absolute;
+      inset: 9%;
+
+      border: 1px dashed rgba(255, 255, 255, 0.12);
+      border-radius: 50%;
+
+      animation: rotateOuterRing 30s linear infinite;
+    }
+
+    @keyframes rotateOuterRing {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    .ring-dot {
+      position: absolute;
+
+      width: 7px;
+      height: 7px;
+
+      pointer-events: none;
+
+      background: var(--red);
+
       box-shadow:
-        inset 0 0 0 10px rgba(0, 0, 0, 0.28),
-        inset 0 0 50px rgba(0, 0, 0, 0.65);
-      transition: transform 4.2s cubic-bezier(0.08, 0.72, 0.12, 1);
+        0 0 12px rgba(255, 70, 85, 0.8);
+    }
+
+    .ring-dot.one {
+      top: 10%;
+      left: 17%;
+    }
+
+    .ring-dot.two {
+      right: 8%;
+      bottom: 30%;
+    }
+
+    .ring-dot.three {
+      left: 13%;
+      bottom: 15%;
+    }
+
+    .wheel-pointer {
+      position: absolute;
+      top: 0.8%;
+      left: 50%;
+      z-index: 25;
+
+      width: 46px;
+      height: 68px;
+
+      transform: translateX(-50%);
+
+      pointer-events: none;
+
+      background: var(--cream);
+
+      clip-path:
+        polygon(
+          0 0,
+          100% 0,
+          50% 100%
+        );
+
+      filter:
+        drop-shadow(
+          0 8px 13px rgba(0, 0, 0, 0.7)
+        );
+    }
+
+    .wheel-pointer::before {
+      content: "";
+
+      position: absolute;
+      top: 7px;
+      left: 50%;
+
+      width: 13px;
+      height: 13px;
+
+      transform: translateX(-50%);
+
+      background: var(--red);
+      border-radius: 50%;
+    }
+
+    .wheel-rotator {
+      position: relative;
+      z-index: 5;
+
+      width: 82%;
+      aspect-ratio: 1;
+
+      overflow: hidden;
+
+      background: #18232e;
+
+      border: 8px solid #202b36;
+      border-radius: 50%;
+
+      box-shadow:
+        0 0 0 4px var(--red),
+        0 0 0 12px #0c1219,
+        0 28px 85px rgba(0, 0, 0, 0.65);
+
       will-change: transform;
     }
 
-    .wheel::after {
-      content: "";
-      position: absolute;
-      inset: 0;
-      z-index: 5;
-      pointer-events: none;
+    #wheelSvg {
+      width: 100%;
+      height: 100%;
+
       border-radius: 50%;
-      background:
-        radial-gradient(
-          circle,
-          transparent 0 28%,
-          rgba(0, 0, 0, 0.06) 29% 70%,
-          rgba(0, 0, 0, 0.3) 100%
-        ),
-        linear-gradient(
-          120deg,
-          rgba(255, 255, 255, 0.13),
-          transparent 35%
-        );
     }
 
-    .wheel-item {
-      --angle: 0deg;
+    .wheel-glass {
+      position: absolute;
+      inset: 9%;
+      z-index: 10;
 
+      pointer-events: none;
+
+      border-radius: 50%;
+
+      box-shadow:
+        inset 0 0 85px rgba(0, 0, 0, 0.5);
+    }
+
+    .wheel-center {
       position: absolute;
       top: 50%;
       left: 50%;
-      z-index: 4;
-      width: clamp(76px, 15vw, 120px);
-      text-align: center;
-      transform:
-        translate(-50%, -50%)
-        rotate(var(--angle))
-        translateY(calc(var(--wheel-size) * -0.34))
-        rotate(calc(var(--angle) * -1));
-    }
+      z-index: 20;
 
-    .wheel-item:nth-child(1) {
-      --angle: 0deg;
-    }
-
-    .wheel-item:nth-child(2) {
-      --angle: 60deg;
-    }
-
-    .wheel-item:nth-child(3) {
-      --angle: 120deg;
-    }
-
-    .wheel-item:nth-child(4) {
-      --angle: 180deg;
-    }
-
-    .wheel-item:nth-child(5) {
-      --angle: 240deg;
-    }
-
-    .wheel-item:nth-child(6) {
-      --angle: 300deg;
-    }
-
-    .year-card {
-      width: 100%;
-      aspect-ratio: 1.28;
       display: grid;
       place-items: center;
-      overflow: hidden;
+
+      width: 21%;
+      aspect-ratio: 1;
+
+      transform: translate(-50%, -50%);
+
+      pointer-events: none;
+
+      color: var(--cream);
+
+      background:
+        radial-gradient(
+          circle,
+          #263541 0 37%,
+          #111922 38% 60%,
+          #080d13 61%
+        );
+
+      border: 4px solid var(--red);
+      border-radius: 50%;
+
+      box-shadow:
+        0 0 0 7px #0c131b,
+        0 0 38px rgba(0, 0, 0, 0.85);
+
+      text-align: center;
+
+      font-size: clamp(0.52rem, 1.1vw, 0.76rem);
+      font-weight: 1000;
+      letter-spacing: 0.12em;
+    }
+
+    .wheel-center small {
+      display: block;
+      margin-bottom: 4px;
+
+      color: var(--red);
+
+      font-size: 0.43rem;
+      font-weight: 950;
+      letter-spacing: 0.18em;
+    }
+
+    /* ==================================================
+       룰렛 패널
+    ================================================== */
+
+    .roulette-panel {
       position: relative;
-      border: 2px solid rgba(255, 255, 255, 0.78);
+
+      padding: 34px;
+
       background:
         linear-gradient(
-          140deg,
-          rgba(255, 70, 85, 0.55),
-          transparent 55%
-        ),
-        #11191a;
-      box-shadow: 0 8px 22px rgba(0, 0, 0, 0.55);
-      clip-path: polygon(
-        9% 0,
-        100% 0,
-        100% 78%,
-        89% 100%,
-        0 100%,
-        0 20%
-      );
+          145deg,
+          rgba(255, 255, 255, 0.06),
+          rgba(255, 255, 255, 0.018)
+        );
+
+      border: 1px solid rgba(255, 255, 255, 0.12);
+
+      clip-path:
+        polygon(
+          0 0,
+          calc(100% - 26px) 0,
+          100% 26px,
+          100% 100%,
+          17px 100%,
+          0 calc(100% - 17px)
+        );
     }
 
-    .year-card::before {
+    .roulette-panel::before {
       content: "";
+
       position: absolute;
-      inset: 7px;
-      border: 1px solid rgba(255, 255, 255, 0.14);
+      top: 0;
+      left: 34px;
+
+      width: 74px;
+      height: 3px;
+
+      pointer-events: none;
+
+      background: var(--red);
     }
 
-    .year-card strong {
-      z-index: 2;
-      font-size: clamp(1.05rem, 3vw, 1.65rem);
-      letter-spacing: -0.04em;
-      text-shadow: 0 3px 8px black;
+    .panel-code {
+      color: var(--red);
+
+      font-size: 0.6rem;
+      font-weight: 950;
+      letter-spacing: 0.22em;
     }
 
-    .year-label {
-      margin-top: 7px;
-      padding: 4px 5px;
-      color: white;
-      font-size: clamp(0.52rem, 1.5vw, 0.7rem);
-      font-weight: 900;
-      white-space: nowrap;
-      background: rgba(5, 8, 9, 0.85);
-      text-shadow: 0 2px 5px black;
+    .panel-title {
+      margin: 14px 0 13px;
+
+      font-size: clamp(2rem, 4vw, 3.5rem);
+      font-weight: 1000;
+      line-height: 0.9;
+      letter-spacing: -0.035em;
     }
 
-    .wheel-hub {
-      position: absolute;
-      z-index: 20;
-      width: 25%;
-      aspect-ratio: 1;
+    .panel-description {
+      margin: 0 0 24px;
+
+      color: #9ca8b3;
+
+      font-size: 0.8rem;
+      line-height: 1.8;
+      word-break: keep-all;
+    }
+
+    .archive-list {
       display: grid;
-      place-items: center;
-      border: 7px solid #171d1e;
-      border-radius: 50%;
-      color: white;
-      font-size: clamp(1rem, 3vw, 1.7rem);
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+
+      margin-bottom: 23px;
+    }
+
+    .archive-item {
+      padding: 10px 11px;
+
+      color: #aeb7bf;
+      background: rgba(0, 0, 0, 0.2);
+      border-left: 2px solid rgba(255, 70, 85, 0.72);
+
+      font-size: 0.58rem;
       font-weight: 900;
-      background: radial-gradient(
-        circle at 35% 30%,
-        #ff7a85,
-        var(--red) 38%,
-        #9b1d28 75%
-      );
-      box-shadow:
-        0 0 0 4px rgba(255, 255, 255, 0.12),
-        0 8px 30px rgba(0, 0, 0, 0.65),
-        0 0 28px rgba(255, 70, 85, 0.45);
+      letter-spacing: 0.08em;
     }
 
-    /* =========================
-       조작 패널
-    ========================= */
+    .spin-button {
+      position: relative;
+      z-index: 2;
 
-    .control-panel {
-      padding: 27px;
-      border: 1px solid var(--line);
-      background: rgba(13, 19, 20, 0.9);
-      backdrop-filter: blur(15px);
-      clip-path: polygon(
-        0 0,
-        calc(100% - 24px) 0,
-        100% 24px,
-        100% 100%,
-        0 100%
-      );
-      box-shadow: 0 24px 60px rgba(0, 0, 0, 0.35);
+      width: 100%;
+      min-height: 60px;
+
+      overflow: hidden;
+      cursor: pointer;
+
+      touch-action: manipulation;
+      pointer-events: auto;
+
+      color: white;
+      background: var(--red);
+      border: 0;
+
+      font-size: 0.77rem;
+      font-weight: 950;
+      letter-spacing: 0.15em;
     }
 
-    .control-header {
-      padding-bottom: 18px;
-      display: flex;
-      justify-content: space-between;
-      gap: 12px;
-      border-bottom: 1px solid var(--line);
+    .spin-button::before {
+      content: "";
+
+      position: absolute;
+      inset: 0;
+
+      pointer-events: none;
+
+      background: #202b36;
+
+      transform:
+        translateX(-105%)
+        skewX(-16deg);
+
+      transition: transform 0.32s ease;
     }
 
-    .control-header strong {
-      font-size: 0.85rem;
-      letter-spacing: 0.1em;
+    .spin-button:hover:not(:disabled)::before {
+      transform:
+        translateX(0)
+        skewX(-16deg);
     }
 
-    .control-status {
-      color: var(--green);
-      font-family: monospace;
-      font-size: 0.72rem;
+    .spin-button span {
+      position: relative;
+      z-index: 2;
+
+      pointer-events: none;
+    }
+
+    .spin-button:disabled {
+      cursor: not-allowed;
+      opacity: 0.65;
     }
 
     .result-box {
-      min-height: 110px;
-      margin: 20px 0;
-      padding: 18px;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
+      min-height: 80px;
+      margin-top: 15px;
+      padding: 15px 16px;
+
+      background: rgba(0, 0, 0, 0.26);
       border-left: 3px solid var(--red);
-      background: rgba(255, 255, 255, 0.04);
     }
 
-    .result-box small {
-      color: var(--muted);
-      font-size: 0.66rem;
-      font-weight: 700;
+    .result-label {
+      margin-bottom: 7px;
+
+      color: var(--text-muted);
+
+      font-size: 0.53rem;
+      font-weight: 950;
+      letter-spacing: 0.18em;
+    }
+
+    .result-value {
+      color: var(--cream);
+
+      font-size: 1rem;
+      font-weight: 950;
+      line-height: 1.4;
+    }
+
+    .sequence-status {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+
+      margin-top: 7px;
+
+      color: #64717c;
+
+      font-size: 0.53rem;
+      font-weight: 850;
+      letter-spacing: 0.1em;
+    }
+
+    .sequence-status::before {
+      content: "";
+
+      width: 5px;
+      height: 5px;
+
+      background: currentColor;
+      border-radius: 50%;
+    }
+
+    .sequence-status.active {
+      color: var(--cyan);
+    }
+
+    /* ==================================================
+       모의 로그인 모달
+    ================================================== */
+
+    .login-modal {
+      position: fixed;
+      inset: 0;
+      z-index: 8000;
+
+      display: grid;
+      place-items: center;
+
+      padding: 20px;
+
+      visibility: hidden;
+      opacity: 0;
+      pointer-events: none;
+
+      background: rgba(3, 6, 10, 0.91);
+
+      backdrop-filter: blur(16px);
+
+      transition:
+        opacity 0.28s ease,
+        visibility 0.28s ease;
+    }
+
+    .login-modal.active {
+      visibility: visible;
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .login-card {
+      position: relative;
+      z-index: 2;
+
+      width: min(480px, 100%);
+      max-height: calc(100vh - 40px);
+      padding: 49px;
+
+      overflow-x: hidden;
+      overflow-y: auto;
+
+      pointer-events: auto;
+
+      color: #111922;
+      background: var(--cream);
+
+      box-shadow:
+        0 32px 115px rgba(0, 0, 0, 0.72);
+
+      clip-path:
+        polygon(
+          0 0,
+          calc(100% - 30px) 0,
+          100% 30px,
+          100% 100%,
+          18px 100%,
+          0 calc(100% - 18px)
+        );
+
+      opacity: 0;
+
+      transform:
+        translateY(25px)
+        scale(0.97);
+
+      transition:
+        opacity 0.3s ease,
+        transform 0.3s ease;
+    }
+
+    .login-modal.active .login-card {
+      opacity: 1;
+
+      transform:
+        translateY(0)
+        scale(1);
+    }
+
+    .login-card::before {
+      content: "";
+
+      position: absolute;
+      top: 0;
+      left: 0;
+
+      width: 100%;
+      height: 5px;
+
+      pointer-events: none;
+
+      background: var(--red);
+    }
+
+    .login-close {
+      position: absolute;
+      top: 18px;
+      right: 19px;
+      z-index: 10;
+
+      display: grid;
+      place-items: center;
+
+      width: 38px;
+      height: 38px;
+
+      cursor: pointer;
+      touch-action: manipulation;
+      pointer-events: auto;
+
+      color: #111922;
+      background: transparent;
+      border: 1px solid rgba(17, 25, 34, 0.22);
+
+      font-size: 1.15rem;
+
+      transition:
+        color 0.2s ease,
+        background 0.2s ease,
+        transform 0.2s ease;
+    }
+
+    .login-close:hover {
+      color: white;
+      background: var(--red);
+
+      transform: rotate(90deg);
+    }
+
+    .demo-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+
+      margin-bottom: 23px;
+      padding: 7px 10px;
+
+      color: white;
+      background: var(--red);
+
+      font-size: 0.6rem;
+      font-weight: 950;
+      letter-spacing: 0.14em;
+    }
+
+    .demo-badge::before {
+      content: "";
+
+      width: 6px;
+      height: 6px;
+
+      background: white;
+      border-radius: 50%;
+    }
+
+    .login-title {
+      margin: 0;
+
+      font-size: clamp(2.3rem, 7vw, 3.55rem);
+      font-weight: 1000;
+      line-height: 0.9;
+      letter-spacing: -0.03em;
+    }
+
+    .login-result {
+      margin-top: 12px;
+
+      color: var(--red);
+
+      font-size: 0.67rem;
+      font-weight: 950;
+      letter-spacing: 0.15em;
+    }
+
+    .login-description {
+      margin: 17px 0 20px;
+
+      color: #5d666e;
+
+      font-size: 0.78rem;
+      line-height: 1.7;
+      word-break: keep-all;
+    }
+
+    .demo-warning {
+      margin-bottom: 23px;
+      padding: 13px 14px;
+
+      color: #84252e;
+      background: rgba(255, 70, 85, 0.1);
+      border-left: 3px solid var(--red);
+
+      font-size: 0.7rem;
+      font-weight: 800;
+      line-height: 1.6;
+      word-break: keep-all;
+    }
+
+    .demo-form {
+      position: relative;
+      z-index: 5;
+
+      pointer-events: auto;
+    }
+
+    .form-group {
+      margin-bottom: 16px;
+    }
+
+    .form-label {
+      display: block;
+      margin-bottom: 8px;
+
+      color: #4c555d;
+
+      font-size: 0.6rem;
+      font-weight: 950;
       letter-spacing: 0.13em;
     }
 
-    .result-name {
-      margin-top: 8px;
-      font-size: 1.3rem;
-      font-weight: 900;
+    .form-input {
+      position: relative;
+      z-index: 5;
+
+      width: 100%;
+      height: 55px;
+      padding: 0 16px;
+
+      pointer-events: auto;
+
+      color: #111922;
+      background: #dfe1dc;
+      border: 2px solid transparent;
+      border-radius: 0;
+      outline: none;
+
+      font-size: 0.83rem;
+      font-weight: 800;
+
+      transition:
+        background 0.2s ease,
+        border-color 0.2s ease;
     }
 
-    .spin-button,
-    .claim-button,
-    .test-button {
+    .form-input:focus {
+      background: white;
+      border-color: #111922;
+    }
+
+    .form-input::placeholder {
+      color: #8b9297;
+      font-weight: 600;
+    }
+
+    /*
+      로그인 실행 버튼 클릭 문제 방지:
+      z-index, pointer-events, touch-action을 명시합니다.
+    */
+
+    .login-submit {
+      position: relative;
+      z-index: 20;
+
+      display: block;
+
       width: 100%;
-      min-height: 57px;
+      min-height: 58px;
+      margin-top: 9px;
+      padding: 12px;
+
       cursor: pointer;
-      font-weight: 900;
-      letter-spacing: 0.05em;
+      touch-action: manipulation;
+      pointer-events: auto;
+      user-select: none;
+
+      color: white;
+      background: var(--red);
+      border: 0;
+
+      font-size: 0.76rem;
+      font-weight: 950;
+      letter-spacing: 0.13em;
+
       transition:
         transform 0.2s ease,
         background 0.2s ease,
         opacity 0.2s ease;
     }
 
-    .spin-button {
-      color: white;
-      background: var(--red);
-    }
-
-    .spin-button:hover:not(:disabled) {
-      background: var(--red-light);
-      transform: translateY(-3px);
-    }
-
-    .spin-button:disabled {
-      cursor: wait;
-      opacity: 0.55;
-    }
-
-    .claim-button {
-      margin-top: 10px;
-      color: var(--green);
-      border: 1px solid rgba(202, 255, 61, 0.35);
-      background: rgba(202, 255, 61, 0.07);
-    }
-
-    .claim-button:hover:not(:disabled) {
-      color: #091000;
-      background: var(--green);
-      transform: translateY(-3px);
-    }
-
-    .claim-button:disabled {
-      cursor: not-allowed;
-      opacity: 0.28;
-    }
-
-    .test-button {
-      min-height: 44px;
-      margin-top: 10px;
-      color: #aab5b1;
-      border: 1px solid var(--line);
-      background: transparent;
-      font-size: 0.72rem;
-    }
-
-    .test-button:hover {
-      color: white;
-      background: rgba(255, 255, 255, 0.06);
-    }
-
-    .control-note {
-      margin-top: 15px;
-      color: #77817e;
-      font-size: 0.68rem;
-      line-height: 1.65;
-    }
-
-    /* =========================
-       인증창
-    ========================= */
-
-    .modal-backdrop {
-      position: fixed;
-      inset: 0;
-      z-index: 500;
-      padding: 20px;
-      display: none;
-      align-items: center;
-      justify-content: center;
-      background: rgba(0, 0, 0, 0.84);
-      backdrop-filter: blur(14px);
-    }
-
-    .modal-backdrop.open {
-      display: flex;
-      animation: fadeIn 0.2s ease;
-    }
-
-    .auth-modal {
-      width: min(100%, 470px);
-      max-height: calc(100vh - 40px);
-      overflow-y: auto;
-      position: relative;
-      color: #151919;
-      background: #f2f1ec;
-      box-shadow: 0 30px 100px rgba(0, 0, 0, 0.8);
-      animation: modalIn 0.25s ease;
-    }
-
-    .demo-ribbon {
-      position: absolute;
-      top: 28px;
-      right: -53px;
-      z-index: 5;
-      width: 205px;
-      padding: 8px;
-      color: white;
-      text-align: center;
-      font-size: 0.63rem;
-      font-weight: 900;
-      letter-spacing: 0.13em;
-      background: var(--red);
-      transform: rotate(42deg);
-    }
-
-    .modal-header {
-      padding: 31px 32px 25px;
-      color: white;
-      background:
-        linear-gradient(
-          130deg,
-          rgba(255, 70, 85, 0.34),
-          transparent 52%
-        ),
-        #111819;
-    }
-
-    .modal-symbol {
-      width: 48px;
-      height: 48px;
-      margin-bottom: 19px;
-      display: grid;
-      place-items: center;
-      color: white;
-      font-size: 1.4rem;
-      font-weight: 900;
-      background: var(--red);
-      clip-path: polygon(
-        0 0,
-        100% 0,
-        100% 72%,
-        72% 100%,
-        0 100%
-      );
-    }
-
-    .modal-header h3 {
-      font-size: 1.5rem;
-    }
-
-    .modal-header p {
-      margin-top: 8px;
-      color: #acb6b3;
-      font-size: 0.79rem;
-      line-height: 1.6;
-    }
-
-    .auth-form {
-      padding: 27px 32px 32px;
-    }
-
-    .safety-notice {
-      margin-bottom: 21px;
-      padding: 13px 14px;
-      color: #484e4c;
-      border-left: 4px solid var(--red);
-      background: #e3e0d8;
-      font-size: 0.73rem;
-      font-weight: 700;
-      line-height: 1.6;
-    }
-
-    .selected-reward {
-      margin-bottom: 20px;
-      padding: 14px;
-      color: #ffffff;
-      background: #172021;
-    }
-
-    .selected-reward small {
-      display: block;
-      color: var(--green);
-      font-size: 0.63rem;
-      font-weight: 900;
-      letter-spacing: 0.12em;
-    }
-
-    .selected-reward strong {
-      display: block;
-      margin-top: 5px;
-      font-size: 1.05rem;
-    }
-
-    .field {
-      margin-bottom: 17px;
-    }
-
-    .field label {
-      display: block;
-      margin-bottom: 8px;
-      color: #303534;
-      font-size: 0.72rem;
-      font-weight: 900;
-    }
-
-    .field input {
-      width: 100%;
-      height: 53px;
-      padding: 0 15px;
-      border: 1px solid #c7c5be;
-      outline: none;
-      color: #171a1a;
-      background: white;
-    }
-
-    .field input:focus {
-      border-color: var(--red);
-      box-shadow: 0 0 0 3px rgba(255, 70, 85, 0.12);
-    }
-
-    .field input.input-error {
-      border-color: #e32236;
-      background: #fff5f6;
-    }
-
-    .field-help {
-      margin-top: 7px;
-      color: #777c79;
-      font-size: 0.64rem;
-      line-height: 1.5;
-    }
-
-    .form-error {
-      display: none;
-      margin-top: 8px;
-      padding: 11px 12px;
-      color: #a71625;
-      border: 1px solid rgba(227, 34, 54, 0.25);
-      background: rgba(227, 34, 54, 0.08);
-      font-size: 0.72rem;
-      font-weight: 800;
-      line-height: 1.5;
-    }
-
-    .form-error.show {
-      display: block;
-    }
-
-    .modal-actions {
-      margin-top: 22px;
-      display: grid;
-      grid-template-columns: 1fr 1.55fr;
-      gap: 10px;
-    }
-
-    .cancel-button,
-    .verify-button {
-      min-height: 52px;
-      cursor: pointer;
-      font-size: 0.83rem;
-      font-weight: 900;
-      transition:
-        transform 0.2s ease,
-        background 0.2s ease;
-    }
-
-    .cancel-button {
-      color: #484d4c;
-      border: 1px solid #cbc9c2;
-      background: transparent;
-    }
-
-    .cancel-button:hover {
-      background: #e6e4de;
-    }
-
-    .verify-button {
-      color: white;
-      background: var(--red);
-    }
-
-    .verify-button:hover {
-      background: var(--red-light);
+    .login-submit:hover:not(:disabled) {
+      background: #111922;
       transform: translateY(-2px);
     }
 
-    /* =========================
-       결과 화면
-    ========================= */
-
-    .result-backdrop {
-      position: fixed;
-      inset: 0;
-      z-index: 600;
-      padding: 20px;
-      display: none;
-      align-items: center;
-      justify-content: center;
-      background:
-        radial-gradient(
-          circle,
-          rgba(255, 70, 85, 0.24),
-          rgba(0, 0, 0, 0.95) 55%
-        );
-      backdrop-filter: blur(12px);
+    .login-submit:active:not(:disabled) {
+      transform: translateY(0);
     }
 
-    .result-backdrop.open {
-      display: flex;
-      animation: fadeIn 0.2s ease;
+    .login-submit:disabled {
+      cursor: wait;
+      opacity: 0.68;
     }
 
-    .prank-card {
-      width: min(100%, 530px);
-      padding: 45px 32px;
-      color: white;
-      text-align: center;
-      border: 1px solid rgba(255, 255, 255, 0.15);
-      background:
-        linear-gradient(
-          140deg,
-          rgba(255, 70, 85, 0.2),
-          transparent 42%
-        ),
-        #0d1415;
-      clip-path: polygon(
-        0 0,
-        calc(100% - 30px) 0,
-        100% 30px,
-        100% 100%,
-        30px 100%,
-        0 calc(100% - 30px)
-      );
-      box-shadow: 0 30px 100px rgba(0, 0, 0, 0.75);
-      animation: modalIn 0.25s ease;
-    }
+    .demo-message {
+      min-height: 23px;
+      margin-top: 15px;
 
-    .prank-icon {
-      width: 82px;
-      height: 82px;
-      margin: 0 auto 21px;
-      display: grid;
-      place-items: center;
-      border: 3px solid var(--red);
-      border-radius: 50%;
-      font-size: 2.3rem;
-      background: rgba(255, 70, 85, 0.12);
-      box-shadow: 0 0 35px rgba(255, 70, 85, 0.25);
-    }
+      color: #2e7542;
 
-    .prank-card h3 {
-      color: var(--red);
-      font-size: clamp(2.5rem, 8vw, 4rem);
-      line-height: 1;
-    }
-
-    .prank-message {
-      margin-top: 16px;
-      color: #d8dddb;
-      font-weight: 700;
-      line-height: 1.75;
+      font-size: 0.7rem;
+      font-weight: 850;
+      line-height: 1.5;
       word-break: keep-all;
     }
 
-    .safe-result {
-      margin-top: 20px;
-      padding: 13px;
-      color: var(--green);
-      border: 1px solid rgba(202, 255, 61, 0.22);
-      background: rgba(202, 255, 61, 0.06);
-      font-size: 0.74rem;
-      line-height: 1.6;
+    .demo-message.error {
+      color: #a12e38;
     }
 
-    .result-close-button {
-      min-width: 180px;
-      min-height: 52px;
-      margin-top: 24px;
-      cursor: pointer;
-      color: white;
-      font-weight: 900;
-      background: var(--red);
-    }
-
-    .result-close-button:hover {
-      background: var(--red-light);
-    }
-
-    /* =========================
-       알림 및 효과
-    ========================= */
-
-    .toast {
-      position: fixed;
-      bottom: 28px;
-      left: 50%;
-      z-index: 800;
-      width: min(390px, calc(100% - 30px));
-      padding: 16px 20px;
-      visibility: hidden;
-      opacity: 0;
-      color: white;
-      text-align: center;
-      font-size: 0.8rem;
-      font-weight: 800;
-      border: 1px solid rgba(202, 255, 61, 0.25);
-      background: rgba(10, 17, 16, 0.97);
-      box-shadow: 0 18px 45px rgba(0, 0, 0, 0.55);
-      transform: translate(-50%, 15px);
-      transition: 0.25s ease;
-    }
-
-    .toast.show {
-      visibility: visible;
-      opacity: 1;
-      transform: translate(-50%, 0);
-    }
-
-    .confetti {
-      position: fixed;
-      top: -20px;
-      z-index: 700;
-      width: 9px;
-      height: 16px;
-      pointer-events: none;
-      animation: confettiFall 2.8s linear forwards;
-    }
+    /* ==================================================
+       푸터
+    ================================================== */
 
     .footer {
-      padding: 31px 20px;
-      color: #727c79;
-      text-align: center;
-      font-size: 0.67rem;
-      line-height: 1.7;
+      display: flex;
+      justify-content: space-between;
+      gap: 20px;
+
+      padding: 30px 6vw;
+
+      color: #68737d;
+      background: var(--background-deep);
       border-top: 1px solid rgba(255, 255, 255, 0.07);
+
+      font-size: 0.57rem;
+      font-weight: 850;
+      letter-spacing: 0.11em;
     }
 
-    @keyframes pulse {
-      50% {
-        opacity: 0.4;
-        transform: scale(0.75);
-      }
-    }
+    /* ==================================================
+       태블릿
+    ================================================== */
 
-    @keyframes float {
-      50% {
-        transform: translateY(-10px) rotate(0.5deg);
-      }
-    }
-
-    @keyframes fadeIn {
-      from {
-        opacity: 0;
-      }
-
-      to {
-        opacity: 1;
-      }
-    }
-
-    @keyframes modalIn {
-      from {
-        opacity: 0;
-        transform: translateY(22px) scale(0.97);
-      }
-
-      to {
-        opacity: 1;
-        transform: translateY(0) scale(1);
-      }
-    }
-
-    @keyframes confettiFall {
-      to {
-        opacity: 0;
-        transform:
-          translate3d(var(--drift), 110vh, 0)
-          rotate(900deg);
-      }
-    }
-
-    /* =========================
-       반응형
-    ========================= */
-
-    @media (max-width: 950px) {
-      .hero-grid,
+    @media (max-width: 940px) {
       .roulette-layout {
         grid-template-columns: 1fr;
       }
 
-      .hero-visual {
-        min-height: 430px;
+      .wheel-area {
+        width: min(78vw, 610px);
       }
 
-      .tactical-card {
-        max-width: 350px;
-      }
-
-      .control-panel {
-        width: min(100%, 550px);
-        margin: 0 auto;
+      .roulette-panel {
+        width: min(620px, 100%);
+        margin: auto;
       }
     }
 
-    @media (max-width: 600px) {
+    /* ==================================================
+       모바일
+    ================================================== */
+
+    @media (max-width: 650px) {
       :root {
-        --wheel-size: min(84vw, 430px);
+        --header-height: 66px;
       }
 
-      .container {
-        width: calc(100% - 24px);
+      .site-header {
+        padding: 0 20px;
       }
 
-      .navigation {
-        min-height: 64px;
-      }
-
-      .server-status {
+      .system-status {
         display: none;
       }
 
       .hero {
-        min-height: auto;
-        padding: 110px 0 75px;
+        min-height: 94vh;
+        padding-inline: 20px;
+      }
+
+      .hero-side-text {
+        display: none;
+      }
+
+      .eyebrow {
+        gap: 9px;
+
+        font-size: 0.58rem;
+        letter-spacing: 0.2em;
+      }
+
+      .eyebrow::before,
+      .eyebrow::after {
+        width: 28px;
       }
 
       .hero-title {
-        font-size: clamp(3.1rem, 17vw, 5rem);
+        padding-inline: 0.04em;
+
+        font-size: clamp(2.75rem, 15vw, 5rem);
+        line-height: 0.96;
+        letter-spacing: 0;
       }
 
-      .hero-visual {
-        min-height: 380px;
-      }
-
-      .tactical-card {
-        max-width: 305px;
-      }
-
-      .target-circle {
-        width: 185px;
-        height: 185px;
-      }
-
-      .target-core {
-        width: 100px;
-        height: 100px;
-        font-size: 2.7rem;
+      .hero-title-outline,
+      .hero-title-solid {
+        padding-inline: 0.03em;
+        white-space: normal;
       }
 
       .roulette-section {
-        padding: 85px 0;
+        padding:
+          calc(var(--header-height) + 45px)
+          20px
+          85px;
       }
 
-      .section-heading {
-        margin-bottom: 40px;
+      .section-header {
+        display: block;
       }
 
-      .wheel-frame {
-        width: calc(var(--wheel-size) + 20px);
-        height: calc(var(--wheel-size) + 20px);
+      .section-description {
+        margin-top: 20px;
       }
 
-      .wheel-item {
-        width: clamp(64px, 20vw, 91px);
+      .wheel-area {
+        width: min(90vw, 510px);
+        min-width: 0;
       }
 
-      .modal-header,
-      .auth-form {
-        padding-right: 22px;
-        padding-left: 22px;
+      .wheel-rotator {
+        border-width: 6px;
+
+        box-shadow:
+          0 0 0 3px var(--red),
+          0 0 0 9px #0c1219,
+          0 20px 60px rgba(0, 0, 0, 0.65);
       }
 
-      .modal-actions {
-        grid-template-columns: 1fr;
+      .wheel-pointer {
+        width: 36px;
+        height: 53px;
       }
 
-      .prank-card {
-        padding: 38px 22px;
+      .wheel-center {
+        width: 23%;
+
+        border-width: 3px;
+
+        box-shadow:
+          0 0 0 5px #0c131b,
+          0 0 30px rgba(0, 0, 0, 0.8);
+      }
+
+      .roulette-panel {
+        padding: 27px;
+      }
+
+      .login-card {
+        padding:
+          46px
+          24px
+          30px;
+      }
+
+      .footer {
+        flex-direction: column;
       }
     }
+
+    /* ==================================================
+       모션 감소
+    ================================================== */
 
     @media (prefers-reduced-motion: reduce) {
       html {
         scroll-behavior: auto;
       }
 
-      *,
-      *::before,
-      *::after {
-        animation-duration: 0.01ms !important;
-      }
-
-      .wheel {
-        transition-duration: 0.01ms;
+      .scan-line,
+      .wheel-outer-ring::after,
+      .system-status-dot {
+        animation: none;
       }
     }
   </style>
 </head>
 
 <body>
-  <!-- 상단 메뉴 -->
-  <header class="header">
-    <nav class="container navigation">
-      <a href="#home" class="logo">
-        <span class="logo-mark">V</span>
+  <!-- 배경 장식 -->
+  <div class="background-grid"></div>
+  <div class="background-diamond"></div>
+  <div class="noise"></div>
+  <div class="scan-line"></div>
 
-        <span class="logo-text">
-          <strong>CHAMPIONS ROULETTE</strong>
-          <small>TACTICAL RANDOM DROP</small>
+  <!-- ==================================================
+       헤더
+  ================================================== -->
+
+  <header class="site-header">
+    <a
+      class="brand"
+      href="#home"
+      aria-label="메인 화면으로 이동"
+    >
+      <span
+        class="brand-mark"
+        aria-hidden="true"
+      ></span>
+
+      <span>
+        <span class="brand-name">
+          CHAMPIONS
         </span>
-      </a>
 
-      <div class="server-status">
-        <span class="server-dot"></span>
-        SYSTEM ONLINE
-      </div>
-    </nav>
+        <span class="brand-subtitle">
+          ROULETTE PROTOCOL
+        </span>
+      </span>
+    </a>
+
+    <div class="system-status">
+      <span class="system-status-dot"></span>
+      SYSTEM ONLINE
+    </div>
   </header>
 
   <main>
-    <!-- 메인 화면 -->
-    <section class="hero" id="home">
-      <div class="container hero-grid">
-        <div>
-          <div class="eyebrow">
-            CHAMPIONS SPECIAL EVENT
-          </div>
+    <!-- ==================================================
+         메인 화면
+    ================================================== -->
 
-          <h1 class="hero-title">
-            돌려라.
-            <span class="outline">운명을</span>
-            <span class="red">획득하라.</span>
-          </h1>
+    <section
+      class="hero"
+      id="home"
+    >
+      <div class="hero-side-text">
+        SELECT // SPIN // DISCOVER
+      </div>
 
-          <div class="collaboration">
-            라엣 게임조 <span>X</span> 텐즈 / 함께한
-          </div>
-
-          <p class="description">
-            2021년부터 2026년까지 총 여섯 개의 챔피언스 보상 중
-            하나가 선택됩니다. 룰렛을 돌리고 당첨 연도를 확인하세요.
-          </p>
-
-          <div class="hero-actions">
-            <button
-              type="button"
-              class="primary-button"
-              id="goToRouletteButton"
-            >
-              룰렛 시작하기 ↓
-            </button>
-
-            <button
-              type="button"
-              class="secondary-button"
-              id="heroAuthTestButton"
-            >
-              인증창 테스트
-            </button>
-          </div>
+      <div class="hero-content">
+        <div class="eyebrow">
+          CHAMPIONS ARCHIVE
         </div>
 
-        <div class="hero-visual" aria-hidden="true">
-          <div class="tactical-card">
-            <div class="hud top">
-              TARGET LOCKED<br />
-              CHAMPIONS ARCHIVE
-            </div>
+        <h1 class="hero-title">
+          <span class="hero-title-outline">
+            ROULETTE
+          </span>
 
-            <div class="target-circle">
-              <div class="target-core">
-                V
-              </div>
-            </div>
+          <span class="hero-title-solid">
+            PROTOCOL
+          </span>
+        </h1>
 
-            <div class="hud bottom">
-              DROP RATE 16.66%<br />
-              OPERATION 2026
-            </div>
-          </div>
+        <p class="hero-description">
+          2021년부터 2026년까지 여섯 개의 챔피언스 아카이브가
+          하나의 룰렛에 연결되어 있습니다. 프로토콜을 작동시키고
+          선택된 챔피언스 시즌을 확인하세요.
+        </p>
+
+        <div class="hero-actions">
+          <button
+            class="protocol-button"
+            id="goRouletteButton"
+            type="button"
+          >
+            <span class="protocol-button-inner">
+              <span>룰렛 하러 가기</span>
+
+              <svg
+                width="18"
+                height="18"
+                viewBox="0 0 24 24"
+                fill="none"
+                aria-hidden="true"
+              >
+                <path
+                  d="M5 12H19M14 7L19 12L14 17"
+                  stroke="currentColor"
+                  stroke-width="2"
+                />
+              </svg>
+            </span>
+          </button>
         </div>
       </div>
     </section>
 
-    <!-- 룰렛 화면 -->
-    <section class="roulette-section" id="roulette">
-      <div class="container">
-        <div class="section-heading">
-          <div class="section-number">
-            OPERATION / 002
+    <!-- ==================================================
+         룰렛
+    ================================================== -->
+
+    <section
+      class="roulette-section"
+      id="roulette"
+    >
+      <div class="section-header">
+        <div>
+          <div class="section-code">
+            01 // CHAMPIONS DATABASE
           </div>
 
-          <h2>CHAMPIONS ROULETTE</h2>
+          <h2 class="section-title">
+            ONE WHEEL.<br>
+            SIX ERAS.
+          </h2>
+        </div>
 
-          <p>
-            룰렛을 돌려 당첨 스킨를 확인하세요.
+        <p class="section-description">
+          하나의 룰렛에 CHAMPIONS 2021부터 2026까지 총 6개의
+          시즌이 배치됩니다. 각 칸은 같은 폴더의 연도별 JPG 이미지를
+          자동으로 불러옵니다.
+        </p>
+      </div>
+
+      <div class="roulette-layout">
+        <div class="wheel-area">
+          <div class="wheel-outer-ring"></div>
+
+          <span class="ring-dot one"></span>
+          <span class="ring-dot two"></span>
+          <span class="ring-dot three"></span>
+
+          <div
+            class="wheel-pointer"
+            aria-hidden="true"
+          ></div>
+
+          <div
+            class="wheel-rotator"
+            id="wheelRotator"
+          >
+            <svg
+              id="wheelSvg"
+              viewBox="0 0 600 600"
+              role="img"
+              aria-label="CHAMPIONS 2021부터 2026까지의 룰렛"
+            ></svg>
+          </div>
+
+          <div class="wheel-glass"></div>
+
+          <div class="wheel-center">
+            <div>
+              <small>PROTOCOL</small>
+              SPIN
+            </div>
+          </div>
+        </div>
+
+        <aside class="roulette-panel">
+          <div class="panel-code">
+            ACTIVE UNIT // 006
+          </div>
+
+          <h3 class="panel-title">
+            CHAMPIONS<br>
+            SELECTOR
+          </h3>
+
+          <p class="panel-description">
+            버튼을 누르면 룰렛이 빠르게 회전한 뒤 서서히 감속합니다.
+            회전 속도에 맞춰 틱 사운드도 점점 느려집니다.
           </p>
-        </div>
 
-        <div class="roulette-layout">
-          <div class="wheel-zone">
-            <div class="wheel-frame">
-              <div class="pointer"></div>
-
-              <div class="wheel" id="wheel">
-                <div class="wheel-item">
-                  <div class="year-card">
-                    <strong>2021</strong>
-                  </div>
-
-                  <div class="year-label">
-                    2021 CHAMPIONS
-                  </div>
-                </div>
-
-                <div class="wheel-item">
-                  <div class="year-card">
-                    <strong>2022</strong>
-                  </div>
-
-                  <div class="year-label">
-                    2022 CHAMPIONS
-                  </div>
-                </div>
-
-                <div class="wheel-item">
-                  <div class="year-card">
-                    <strong>2023</strong>
-                  </div>
-
-                  <div class="year-label">
-                    2023 CHAMPIONS
-                  </div>
-                </div>
-
-                <div class="wheel-item">
-                  <div class="year-card">
-                    <strong>2024</strong>
-                  </div>
-
-                  <div class="year-label">
-                    2024 CHAMPIONS
-                  </div>
-                </div>
-
-                <div class="wheel-item">
-                  <div class="year-card">
-                    <strong>2025</strong>
-                  </div>
-
-                  <div class="year-label">
-                    2025 CHAMPIONS
-                  </div>
-                </div>
-
-                <div class="wheel-item">
-                  <div class="year-card">
-                    <strong>2026</strong>
-                  </div>
-
-                  <div class="year-label">
-                    2026 CHAMPIONS
-                  </div>
-                </div>
-              </div>
-
-              <div class="wheel-hub">
-                SPIN
-              </div>
-            </div>
+          <div class="archive-list">
+            <div class="archive-item">01 // 2021</div>
+            <div class="archive-item">02 // 2022</div>
+            <div class="archive-item">03 // 2023</div>
+            <div class="archive-item">04 // 2024</div>
+            <div class="archive-item">05 // 2025</div>
+            <div class="archive-item">06 // 2026</div>
           </div>
 
-          <!-- 조작 패널 -->
-          <aside class="control-panel">
-            <div class="control-header">
-              <strong>MISSION CONTROL</strong>
+          <button
+            class="spin-button"
+            id="spinButton"
+            type="button"
+          >
+            <span>룰렛 작동하기</span>
+          </button>
 
-              <span
-                class="control-status"
-                id="controlStatus"
-              >
-                READY
-              </span>
+          <div class="result-box">
+            <div class="result-label">
+              PROTOCOL RESULT
             </div>
 
-            <div class="result-box">
-              <small>CURRENT RESULT</small>
-
-              <div class="result-name" id="resultName">
-                대기 중...
-              </div>
+            <div
+              class="result-value"
+              id="resultValue"
+              aria-live="polite"
+            >
+              작동 대기 중...
             </div>
 
-            <button
-              type="button"
-              class="spin-button"
-              id="spinButton"
+            <div
+              class="sequence-status"
+              id="sequenceStatus"
             >
-              룰렛 돌리기
-            </button>
-
-            <button
-              type="button"
-              class="claim-button"
-              id="claimButton"
-              disabled
-            >
-              보상 받기
-            </button>
-
-            <button
-              type="button"
-              class="test-button"
-              id="panelAuthTestButton"
-            >
-              로그인
-            </button>
-
-            <p class="control-note">
-              ※ 실제 게임 아이템 지급은 3일내로 이루어집니다.
-            </p>
-          </aside>
-        </div>
+              AUDIO SEQUENCE READY
+            </div>
+          </div>
+        </aside>
       </div>
     </section>
   </main>
 
-  <footer class="footer">
-    FAN-MADE PRANK DEMO — NOT AFFILIATED WITH OR ENDORSED BY RIOT GAMES.
-    <br />
-    입력값은 전송되거나 저장되지 않으니 실제 계정 정보를 입력하세요.
-  </footer>
+  <!-- ==================================================
+       모의 로그인
+  ================================================== -->
 
-  <!-- 인증창 -->
   <div
-    class="modal-backdrop"
-    id="authModal"
+    class="login-modal"
+    id="loginModal"
     role="dialog"
     aria-modal="true"
-    aria-labelledby="authModalTitle"
     aria-hidden="true"
+    aria-labelledby="loginTitle"
   >
-    <div class="auth-modal">
-      <div class="demo-ribbon">
-        ROULETTE DEMO
-      </div>
-
-      <div class="modal-header">
-        <div class="modal-symbol">
-          V
-        </div>
-
-        <h3 id="authModalTitle">
-          보상 인증
-        </h3>
-
-        <p>
-          아이디를 잘 입력해주세요.<br />
-          비밀번호를 잘 입력해주세요.
-        </p>
-      </div>
-
-      <form
-        class="auth-form"
-        id="authForm"
-        autocomplete="off"
-        novalidate
+    <div class="login-card">
+      <button
+        class="login-close"
+        id="closeLoginButton"
+        type="button"
+        aria-label="모의 로그인 닫기"
       >
-        <div class="safety-notice">
-          ⚠️ 로그인정보가 올바르지 않을시 스킨이 지급되자 않습니다.<br />
-          닉네임과 비밀번호만을 입력하세요.
-          입력 내용은 서버로 전송되거나 저장되지 않습니다.
-        </div>
+        ×
+      </button>
 
-        <div class="selected-reward">
-          <small>SELECTED REWARD</small>
-          <strong id="modalRewardName">
-            테스트 보상
-          </strong>
-        </div>
-
-        <div class="field">
-          <label for="nicknameInput">
-            요원 닉네임
-          </label>
-
-          <input
-            id="nicknameInput"
-            type="text"
-            maxlength="20"
-            placeholder="userid"
-            autocomplete="off"
-          />
-
-          <div class="field-help">
-            실제 계정 아이디를 입력하세요.
-          </div>
-        </div>
-
-        <div class="field">
-          <label for="demoCodeInput">
-            인증 코드
-          </label>
-
-          <input
-            id="demoCodeInput"
-            type="text"
-            maxlength="20"
-            placeholder="password"
-            autocomplete="off"
-          />
-
-          <div class="field-help">
-            입력한 글자가 그대로 표시됩니다.
-          </div>
-        </div>
-
-        <div
-          class="form-error"
-          id="formError"
-          role="alert"
-        >
-          정보를 모두 입력해주세요.
-        </div>
-
-        <div class="modal-actions">
-          <button
-            type="button"
-            class="cancel-button"
-            id="cancelAuthButton"
-          >
-            취소
-          </button>
-
-          <!--
-            submit이 아니라 직접 클릭 이벤트로 작동하도록
-            type="button"을 사용했습니다.
-          -->
-          <button
-            type="button"
-            class="verify-button"
-            id="verifyAuthButton"
-          >
-            인증 완료
-          </button>
-        </div>
-      </form>
-    </div>
-  </div>
-
-  <!-- 결과창 -->
-  <div
-    class="result-backdrop"
-    id="prankModal"
-    role="dialog"
-    aria-modal="true"
-    aria-labelledby="prankTitle"
-    aria-hidden="true"
-  >
-    <div class="prank-card">
-      <div class="prank-icon">
-        😎
+      <div class="demo-badge">
+        DEMO // 모의 로그인
       </div>
 
-      <h3 id="prankTitle">
-        받으려면 확인 버튼을 눌러주세!
-      </h3>
+      <h2
+        class="login-title"
+        id="loginTitle"
+      >
+        SIGN IN
+      </h2>
 
-      <p class="prank-message" id="prankMessage">
-        요원!
+      <div
+        class="login-result"
+        id="loginResult"
+      >
+        SELECTED // CHAMPIONS
+      </div>
+
+      <p class="login-description">
+        룰렛 결과 확인을 위해 표시되는 연출용 화면입니다.
+        실제 서비스의 로그인 페이지가 아닙니다.
       </p>
 
-      <div class="safe-result">
-        xkrauddl1234@valmail.com<br />
-        3일내로 발로란트에서 응답이 안올시 위 이메일로 문의해 주세요.
+      <div class="demo-warning">
+        모의 로그인입니다. 입력 내용은 저장되거나 서버로 전송되지
+        않습니다. 실제 아이디와 실제 비밀번호는 입력하지 마세요.
       </div>
 
-      <button
-        type="button"
-        class="result-close-button"
-        id="closePrankButton"
+      <div
+        class="demo-form"
+        role="form"
+        aria-label="모의 로그인 양식"
       >
-        확인
-      </button>
+        <div class="form-group">
+          <label
+            class="form-label"
+            for="demoId"
+          >
+            DEMO ID // 연출용 아이디
+          </label>
+
+          <input
+            class="form-input"
+            id="demoId"
+            type="text"
+            placeholder="예: player_demo"
+            autocomplete="off"
+            spellcheck="false"
+          >
+        </div>
+
+        <div class="form-group">
+          <label
+            class="form-label"
+            for="demoPassword"
+          >
+            DEMO PASSWORD // 모의 문구
+          </label>
+
+          <input
+            class="form-input"
+            id="demoPassword"
+            type="password"
+            placeholder="실제 비밀번호 입력 금지"
+            autocomplete="new-password"
+          >
+        </div>
+
+        <!--
+          submit이 아니라 일반 button으로 지정하여
+          브라우저의 자동 폼 제출이나 새로고침을 방지합니다.
+        -->
+        <button
+          class="login-submit"
+          id="demoLoginButton"
+          type="button"
+        >
+          모의 로그인 실행
+        </button>
+
+        <div
+          class="demo-message"
+          id="demoMessage"
+          aria-live="polite"
+        ></div>
+      </div>
     </div>
   </div>
 
-  <!-- 알림 -->
-  <div
-    class="toast"
-    id="toast"
-    role="status"
-    aria-live="polite"
-  ></div>
+  <!-- ==================================================
+       푸터
+  ================================================== -->
+
+  <footer class="footer">
+    <span>
+      CHAMPIONS ROULETTE // UNOFFICIAL FAN-MADE CONCEPT UI
+    </span>
+
+    <span>
+      DEMO LOGIN — NO DATA IS STORED OR TRANSMITTED
+    </span>
+  </footer>
 
   <script>
-    /*
-      이 코드는 외부 서버 통신을 사용하지 않습니다.
-      fetch, XMLHttpRequest, localStorage, cookie를 사용하지 않습니다.
-    */
+    "use strict";
 
-    document.addEventListener("DOMContentLoaded", function () {
-      const prizes = [
-        "2021 CHAMPIONS",
-        "2022 CHAMPIONS",
-        "2023 CHAMPIONS",
-        "2024 CHAMPIONS",
-        "2025 CHAMPIONS",
-        "2026 CHAMPIONS"
-      ];
+    /* ==================================================
+       챔피언스 데이터
+    ================================================== */
 
-      /*
-        HTML 요소 찾기
-      */
+    const champions = [
+      {
+        year: 2021,
+        image: "./2021.jpg",
+        color: "#8e2635"
+      },
+      {
+        year: 2022,
+        image: "./2022.jpg",
+        color: "#1e4b5b"
+      },
+      {
+        year: 2023,
+        image: "./2023.jpg",
+        color: "#8b6231"
+      },
+      {
+        year: 2024,
+        image: "./2024.jpg",
+        color: "#2c3f5d"
+      },
+      {
+        year: 2025,
+        image: "./2025.jpg",
+        color: "#713140"
+      },
+      {
+        year: 2026,
+        image: "./2026.jpg",
+        color: "#27545a"
+      }
+    ];
 
-      const wheel =
-        document.getElementById("wheel");
+    /* ==================================================
+       DOM 요소
+    ================================================== */
 
-      const spinButton =
-        document.getElementById("spinButton");
+    const wheelSvg =
+      document.getElementById("wheelSvg");
 
-      const claimButton =
-        document.getElementById("claimButton");
+    const wheelRotator =
+      document.getElementById("wheelRotator");
 
-      const resultName =
-        document.getElementById("resultName");
+    const spinButton =
+      document.getElementById("spinButton");
 
-      const controlStatus =
-        document.getElementById("controlStatus");
+    const spinButtonText =
+      spinButton.querySelector("span");
 
-      const goToRouletteButton =
-        document.getElementById("goToRouletteButton");
+    const resultValue =
+      document.getElementById("resultValue");
 
-      const heroAuthTestButton =
-        document.getElementById("heroAuthTestButton");
+    const sequenceStatus =
+      document.getElementById("sequenceStatus");
 
-      const panelAuthTestButton =
-        document.getElementById("panelAuthTestButton");
+    const goRouletteButton =
+      document.getElementById("goRouletteButton");
 
-      const authModal =
-        document.getElementById("authModal");
+    const loginModal =
+      document.getElementById("loginModal");
 
-      const authForm =
-        document.getElementById("authForm");
+    const loginResult =
+      document.getElementById("loginResult");
 
-      const modalRewardName =
-        document.getElementById("modalRewardName");
+    const closeLoginButton =
+      document.getElementById("closeLoginButton");
 
-      const nicknameInput =
-        document.getElementById("nicknameInput");
+    const demoIdInput =
+      document.getElementById("demoId");
 
-      const demoCodeInput =
-        document.getElementById("demoCodeInput");
+    const demoPasswordInput =
+      document.getElementById("demoPassword");
 
-      const formError =
-        document.getElementById("formError");
+    const demoLoginButton =
+      document.getElementById("demoLoginButton");
 
-      const cancelAuthButton =
-        document.getElementById("cancelAuthButton");
+    const demoMessage =
+      document.getElementById("demoMessage");
 
-      const verifyAuthButton =
-        document.getElementById("verifyAuthButton");
+    /* ==================================================
+       상태
+    ================================================== */
 
-      const prankModal =
-        document.getElementById("prankModal");
+    const SVG_NS =
+      "http://www.w3.org/2000/svg";
 
-      const prankMessage =
-        document.getElementById("prankMessage");
+    const XLINK_NS =
+      "http://www.w3.org/1999/xlink";
 
-      const closePrankButton =
-        document.getElementById("closePrankButton");
+    let isSpinning = false;
+    let currentRotation = 0;
+    let selectedYear = null;
 
-      const toast =
-        document.getElementById("toast");
+    let audioContext = null;
+    let tickSequenceId = 0;
 
-      /*
-        상태값
-      */
+    let spinFinishTimer = null;
+    let loginOpenTimer = null;
+    let demoLoginTimer = null;
 
-      let selectedPrize = "";
-      let currentRotation = 0;
-      let isSpinning = false;
-      let toastTimer = null;
-      let spinFallbackTimer = null;
+    /* ==================================================
+       SVG 함수
+    ================================================== */
 
-      /*
-        필수 요소 검사
-      */
-
-      const requiredElements = [
-        wheel,
-        spinButton,
-        claimButton,
-        resultName,
-        controlStatus,
-        authModal,
-        authForm,
-        nicknameInput,
-        demoCodeInput,
-        verifyAuthButton,
-        prankModal
-      ];
-
-      const hasMissingElement =
-        requiredElements.some(function (element) {
-          return element === null;
-        });
-
-      if (hasMissingElement) {
-        console.error(
-          "필수 HTML 요소를 찾지 못했습니다. 코드를 통째로 다시 붙여 넣어주세요."
+    function createSvgElement(
+      elementName,
+      attributes = {}
+    ) {
+      const element =
+        document.createElementNS(
+          SVG_NS,
+          elementName
         );
 
-        return;
-      }
-
-      /*
-        룰렛 영역으로 이동
-      */
-
-      goToRouletteButton.addEventListener(
-        "click",
-        function () {
-          document
-            .getElementById("roulette")
-            .scrollIntoView({
-              behavior: "smooth",
-              block: "start"
-            });
+      Object.entries(attributes).forEach(
+        ([name, value]) => {
+          element.setAttribute(
+            name,
+            value
+          );
         }
       );
 
-      /*
-        난수 생성
-      */
+      return element;
+    }
 
-      function getRandomIndex(max) {
+    function polarToCartesian(
+      centerX,
+      centerY,
+      radius,
+      angle
+    ) {
+      const radians =
+        (angle - 90) *
+        Math.PI /
+        180;
+
+      return {
+        x:
+          centerX +
+          radius *
+          Math.cos(radians),
+
+        y:
+          centerY +
+          radius *
+          Math.sin(radians)
+      };
+    }
+
+    function createSegmentPath(
+      centerX,
+      centerY,
+      radius,
+      startAngle,
+      endAngle
+    ) {
+      const start =
+        polarToCartesian(
+          centerX,
+          centerY,
+          radius,
+          startAngle
+        );
+
+      const end =
+        polarToCartesian(
+          centerX,
+          centerY,
+          radius,
+          endAngle
+        );
+
+      return [
+        `M ${centerX} ${centerY}`,
+        `L ${start.x} ${start.y}`,
+        `A ${radius} ${radius} 0 0 1 ${end.x} ${end.y}`,
+        "Z"
+      ].join(" ");
+    }
+
+    /* ==================================================
+       룰렛 생성
+    ================================================== */
+
+    function createWheel() {
+      const center = 300;
+      const radius = 300;
+      const segmentAngle = 60;
+
+      wheelSvg.innerHTML = "";
+
+      const definitions =
+        createSvgElement("defs");
+
+      wheelSvg.appendChild(
+        definitions
+      );
+
+      champions.forEach(
+        (champion, index) => {
+          const startAngle =
+            -30 +
+            index *
+            segmentAngle;
+
+          const endAngle =
+            startAngle +
+            segmentAngle;
+
+          const centerAngle =
+            index *
+            segmentAngle;
+
+          const pathData =
+            createSegmentPath(
+              center,
+              center,
+              radius,
+              startAngle,
+              endAngle
+            );
+
+          /*
+            각 이미지가 자기 칸 안에만 표시되도록
+            클리핑 영역을 생성합니다.
+          */
+
+          const clipPath =
+            createSvgElement(
+              "clipPath",
+              {
+                id:
+                  `wheel-clip-${index}`
+              }
+            );
+
+          clipPath.appendChild(
+            createSvgElement(
+              "path",
+              {
+                d: pathData
+              }
+            )
+          );
+
+          definitions.appendChild(
+            clipPath
+          );
+
+          /*
+            이미지가 없을 때 표시되는 기본색입니다.
+          */
+
+          const base =
+            createSvgElement(
+              "path",
+              {
+                d: pathData,
+                fill: champion.color,
+                stroke: "#ece8e1",
+                "stroke-width": "3"
+              }
+            );
+
+          wheelSvg.appendChild(base);
+
+          /*
+            2021.jpg ~ 2026.jpg를 적용합니다.
+          */
+
+          const image =
+            createSvgElement(
+              "image",
+              {
+                x: "0",
+                y: "0",
+                width: "600",
+                height: "600",
+
+                preserveAspectRatio:
+                  "xMidYMid slice",
+
+                "clip-path":
+                  `url(#wheel-clip-${index})`
+              }
+            );
+
+          image.setAttribute(
+            "href",
+            champion.image
+          );
+
+          image.setAttributeNS(
+            XLINK_NS,
+            "xlink:href",
+            champion.image
+          );
+
+          image.addEventListener(
+            "error",
+            () => {
+              image.style.display =
+                "none";
+            }
+          );
+
+          wheelSvg.appendChild(
+            image
+          );
+
+          /*
+            이미지 위 어두운 오버레이입니다.
+          */
+
+          const overlay =
+            createSvgElement(
+              "path",
+              {
+                d: pathData,
+                fill:
+                  "rgba(4, 8, 13, 0.44)",
+
+                stroke:
+                  "rgba(236, 232, 225, 0.78)",
+
+                "stroke-width": "3"
+              }
+            );
+
+          wheelSvg.appendChild(
+            overlay
+          );
+
+          /*
+            텍스트 위치
+          */
+
+          const textPosition =
+            polarToCartesian(
+              center,
+              center,
+              205,
+              centerAngle
+            );
+
+          const textGroup =
+            createSvgElement(
+              "g",
+              {
+                style:
+                  "filter: drop-shadow(0 3px 4px rgba(0,0,0,.95));"
+              }
+            );
+
+          const titleText =
+            createSvgElement(
+              "text",
+              {
+                x: textPosition.x,
+                y:
+                  textPosition.y -
+                  8,
+
+                fill: "#ffffff",
+
+                "text-anchor":
+                  "middle",
+
+                "dominant-baseline":
+                  "middle",
+
+                "font-size": "16",
+                "font-weight": "900",
+                "letter-spacing": "1.5"
+              }
+            );
+
+          titleText.textContent =
+            "CHAMPIONS";
+
+          const yearText =
+            createSvgElement(
+              "text",
+              {
+                x: textPosition.x,
+                y:
+                  textPosition.y +
+                  21,
+
+                fill: "#ffffff",
+
+                "text-anchor":
+                  "middle",
+
+                "dominant-baseline":
+                  "middle",
+
+                "font-size": "29",
+                "font-weight": "1000",
+                "letter-spacing": "1"
+              }
+            );
+
+          yearText.textContent =
+            champion.year;
+
+          textGroup.appendChild(
+            titleText
+          );
+
+          textGroup.appendChild(
+            yearText
+          );
+
+          wheelSvg.appendChild(
+            textGroup
+          );
+        }
+      );
+    }
+
+    /* ==================================================
+       틱 사운드
+    ================================================== */
+
+    function getAudioContext() {
+      if (audioContext) {
+        return audioContext;
+      }
+
+      const BrowserAudioContext =
+        window.AudioContext ||
+        window.webkitAudioContext;
+
+      if (!BrowserAudioContext) {
+        return null;
+      }
+
+      audioContext =
+        new BrowserAudioContext();
+
+      return audioContext;
+    }
+
+    function activateAudio() {
+      try {
+        const context =
+          getAudioContext();
+
         if (
-          window.crypto &&
-          typeof window.crypto.getRandomValues === "function"
+          context &&
+          context.state ===
+            "suspended"
         ) {
-          const randomValues = new Uint32Array(1);
+          context.resume();
+        }
+      } catch (error) {
+        /*
+          오디오를 사용할 수 없어도
+          룰렛은 정상 작동합니다.
+        */
+      }
+    }
 
-          window.crypto.getRandomValues(randomValues);
+    function playTick(progress) {
+      try {
+        const context =
+          getAudioContext();
 
-          return randomValues[0] % max;
+        if (!context) {
+          return;
         }
 
-        return Math.floor(Math.random() * max);
-      }
+        const oscillator =
+          context.createOscillator();
 
-      /*
-        룰렛 돌리기
-      */
+        const gain =
+          context.createGain();
 
-      spinButton.addEventListener(
-        "click",
-        function () {
-          if (isSpinning) {
-            return;
-          }
+        oscillator.type =
+          "square";
 
-          isSpinning = true;
-          selectedPrize = "";
+        oscillator.frequency.value =
+          940 -
+          progress *
+          290;
 
-          spinButton.disabled = true;
-          claimButton.disabled = true;
+        gain.gain.setValueAtTime(
+          0.033,
+          context.currentTime
+        );
 
-          spinButton.textContent = "작전 진행 중...";
-          resultName.textContent = "룰렛 분석 중...";
-          controlStatus.textContent = "SPINNING";
-
-          const selectedIndex =
-            getRandomIndex(prizes.length);
-
-          /*
-            각 보상은 60도 간격입니다.
-
-            선택된 항목을 위쪽 포인터에 맞추기 위한 각도:
-            0번 = 0도
-            1번 = 300도
-            2번 = 240도
-            3번 = 180도
-            4번 = 120도
-            5번 = 60도
-          */
-
-          const targetAngle =
-            (360 - selectedIndex * 60) % 360;
-
-          const currentAngle =
-            ((currentRotation % 360) + 360) % 360;
-
-          let angleDifference =
-            (targetAngle - currentAngle + 360) % 360;
-
-          if (angleDifference === 0) {
-            angleDifference = 360;
-          }
-
-          currentRotation +=
-            360 * 6 + angleDifference;
-
-          wheel.style.transform =
-            "rotate(" + currentRotation + "deg)";
-
-          let spinFinished = false;
-
-          function finishSpin() {
-            if (spinFinished) {
-              return;
-            }
-
-            spinFinished = true;
-
-            window.clearTimeout(spinFallbackTimer);
-
-            selectedPrize =
-              prizes[selectedIndex];
-
-            resultName.textContent =
-              selectedPrize;
-
-            controlStatus.textContent =
-              "REWARD READY";
-
-            spinButton.textContent =
-              "다시 돌리기";
-
-            spinButton.disabled = false;
-            claimButton.disabled = false;
-
-            isSpinning = false;
-
-            showToast(
-              selectedPrize +
-              " 당첨되셨습니! 보상 받기를 눌러주세요."
-            );
-
-            createConfetti();
-          }
-
-          /*
-            transitionend로 회전 종료 감지
-          */
-
-          function handleTransitionEnd(event) {
-            if (
-              event.propertyName !== "transform"
-            ) {
-              return;
-            }
-
-            wheel.removeEventListener(
-              "transitionend",
-              handleTransitionEnd
-            );
-
-            finishSpin();
-          }
-
-          wheel.addEventListener(
-            "transitionend",
-            handleTransitionEnd
+        gain.gain
+          .exponentialRampToValueAtTime(
+            0.001,
+            context.currentTime +
+              0.028
           );
 
-          /*
-            일부 브라우저에서 transitionend가 발생하지 않을 경우를
-            대비한 안전 타이머
-          */
+        oscillator.connect(gain);
+        gain.connect(
+          context.destination
+        );
 
-          spinFallbackTimer =
-            window.setTimeout(function () {
-              wheel.removeEventListener(
-                "transitionend",
-                handleTransitionEnd
-              );
+        oscillator.start();
 
-              finishSpin();
-            }, 4600);
-        }
-      );
-
-      /*
-        인증창 열기
-      */
-
-      function openAuthModal(rewardName) {
-        const reward =
-          rewardName || "인증 테스트 보상";
-
-        modalRewardName.textContent = reward;
-
-        formError.classList.remove("show");
-        nicknameInput.classList.remove("input-error");
-        demoCodeInput.classList.remove("input-error");
-
-        authModal.classList.add("open");
-        authModal.setAttribute("aria-hidden", "false");
-
-        document.body.classList.add("modal-open");
-
-        window.setTimeout(function () {
-          nicknameInput.focus();
-        }, 100);
+        oscillator.stop(
+          context.currentTime +
+            0.032
+        );
+      } catch (error) {
+        /*
+          무음 처리
+        */
       }
+    }
 
-      /*
-        인증창 닫기
-      */
+    function startTickSequence(
+      duration
+    ) {
+      const sequenceId =
+        ++tickSequenceId;
 
-      function closeAuthModal() {
-        authModal.classList.remove("open");
-        authModal.setAttribute("aria-hidden", "true");
+      const startedAt =
+        performance.now();
 
-        document.body.classList.remove("modal-open");
-
-        formError.classList.remove("show");
-        nicknameInput.classList.remove("input-error");
-        demoCodeInput.classList.remove("input-error");
-      }
-
-      /*
-        보상 받기
-      */
-
-      claimButton.addEventListener(
-        "click",
-        function () {
-          if (!selectedPrize) {
-            showToast(
-              "먼저 룰렛을 돌려주세요."
-            );
-
-            return;
-          }
-
-          openAuthModal(selectedPrize);
+      function tick() {
+        if (
+          !isSpinning ||
+          sequenceId !==
+            tickSequenceId
+        ) {
+          return;
         }
-      );
 
-      /*
-        룰렛을 돌리지 않고 인증창 테스트
-      */
+        const elapsed =
+          performance.now() -
+          startedAt;
 
-      heroAuthTestButton.addEventListener(
-        "click",
-        function () {
-          openAuthModal(
-            selectedPrize ||
-            "인증 테스트 보상"
+        const progress =
+          Math.min(
+            elapsed / duration,
+            1
           );
-        }
-      );
 
-      panelAuthTestButton.addEventListener(
-        "click",
-        function () {
-          openAuthModal(
-            selectedPrize ||
-            "인증 테스트 보상"
-          );
-        }
-      );
+        playTick(progress);
 
-      /*
-        인증창 취소
-      */
-
-      cancelAuthButton.addEventListener(
-        "click",
-        function () {
-          closeAuthModal();
-        }
-      );
-
-      /*
-        인증창 검은 배경 클릭 시 닫기
-      */
-
-      authModal.addEventListener(
-        "click",
-        function (event) {
-          if (event.target === authModal) {
-            closeAuthModal();
-          }
-        }
-      );
-
-      /*
-        모의 인증 처리
-
-        이 함수는 입력값을 어디에도 전송하거나 저장하지 않습니다.
-      */
-
-      function processFakeVerification() {
-        const nickname =
-          nicknameInput.value.trim();
-
-        const demoCode =
-          demoCodeInput.value.trim();
-
-        nicknameInput.classList.remove("input-error");
-        demoCodeInput.classList.remove("input-error");
-        formError.classList.remove("show");
-
-        let hasError = false;
-
-        if (nickname === "") {
-          nicknameInput.classList.add("input-error");
-          hasError = true;
-        }
-
-        if (demoCode === "") {
-          demoCodeInput.classList.add("input-error");
-          hasError = true;
-        }
-
-        if (hasError) {
-          formError.classList.add("show");
-
-          if (nickname === "") {
-            nicknameInput.focus();
-          } else {
-            demoCodeInput.focus();
-          }
-
+        if (progress >= 1) {
           return;
         }
 
         /*
-          결과 문구에 사용할 보상 이름
+          처음에는 약 30ms,
+          마지막에는 약 430ms 간격입니다.
         */
 
-        const reward =
-          modalRewardName.textContent.trim();
+        const nextDelay =
+          30 +
+          Math.pow(
+            progress,
+            2.45
+          ) *
+          400;
 
-        /*
-          인증창 닫기
-        */
-
-        closeAuthModal();
-
-        /*
-          장난 결과 표시
-        */
-
-        prankMessage.textContent =
-          nickname +
-          " 요원! " +
-          reward +
-          "에 당첨되었습니다 3일내로 본 계정에 지급됩니다.";
-
-        prankModal.classList.add("open");
-        prankModal.setAttribute("aria-hidden", "false");
-
-        document.body.classList.add("modal-open");
-
-        /*
-          입력값 즉시 삭제
-        */
-
-        authForm.reset();
-
-        createConfetti();
+        window.setTimeout(
+          tick,
+          nextDelay
+        );
       }
 
-      /*
-        인증 완료 버튼
+      tick();
+    }
 
-        form submit 여부와 관계없이 클릭하면 직접 실행됩니다.
-      */
+    /* ==================================================
+       룰렛 회전
+    ================================================== */
 
-      verifyAuthButton.addEventListener(
-        "click",
-        function () {
-          processFakeVerification();
-        }
-      );
-
-      /*
-        Enter 키로도 인증 가능
-      */
-
-      authForm.addEventListener(
-        "submit",
-        function (event) {
-          event.preventDefault();
-          processFakeVerification();
-        }
-      );
-
-      nicknameInput.addEventListener(
-        "keydown",
-        function (event) {
-          if (event.key === "Enter") {
-            event.preventDefault();
-            processFakeVerification();
-          }
-        }
-      );
-
-      demoCodeInput.addEventListener(
-        "keydown",
-        function (event) {
-          if (event.key === "Enter") {
-            event.preventDefault();
-            processFakeVerification();
-          }
-        }
-      );
-
-      /*
-        입력 시작 시 오류 표시 제거
-      */
-
-      nicknameInput.addEventListener(
-        "input",
-        function () {
-          nicknameInput.classList.remove("input-error");
-
-          if (
-            nicknameInput.value.trim() !== "" &&
-            demoCodeInput.value.trim() !== ""
-          ) {
-            formError.classList.remove("show");
-          }
-        }
-      );
-
-      demoCodeInput.addEventListener(
-        "input",
-        function () {
-          demoCodeInput.classList.remove("input-error");
-
-          if (
-            nicknameInput.value.trim() !== "" &&
-            demoCodeInput.value.trim() !== ""
-          ) {
-            formError.classList.remove("show");
-          }
-        }
-      );
-
-      /*
-        장난 결과 닫기
-      */
-
-      function closePrankModal() {
-        prankModal.classList.remove("open");
-        prankModal.setAttribute("aria-hidden", "true");
-
-        document.body.classList.remove("modal-open");
+    function spinWheel() {
+      if (isSpinning) {
+        return;
       }
 
-      closePrankButton.addEventListener(
-        "click",
-        function () {
-          closePrankModal();
-        }
+      isSpinning = true;
+
+      window.clearTimeout(
+        spinFinishTimer
       );
 
-      prankModal.addEventListener(
-        "click",
-        function (event) {
-          if (event.target === prankModal) {
-            closePrankModal();
-          }
-        }
+      window.clearTimeout(
+        loginOpenTimer
       );
 
-      /*
-        ESC 키로 팝업 닫기
-      */
+      spinButton.disabled = true;
 
-      document.addEventListener(
-        "keydown",
-        function (event) {
-          if (event.key !== "Escape") {
-            return;
-          }
+      spinButtonText.textContent =
+        "프로토콜 작동 중...";
 
-          if (
-            prankModal.classList.contains("open")
-          ) {
-            closePrankModal();
-            return;
-          }
+      resultValue.textContent =
+        "챔피언스 데이터 분석 중...";
 
-          if (
-            authModal.classList.contains("open")
-          ) {
-            closeAuthModal();
-          }
-        }
+      sequenceStatus.textContent =
+        "AUDIO SEQUENCE ACTIVE";
+
+      sequenceStatus.classList.add(
+        "active"
       );
 
-      /*
-        하단 알림
-      */
+      activateAudio();
 
-      function showToast(message) {
-        window.clearTimeout(toastTimer);
+      const selectedIndex =
+        Math.floor(
+          Math.random() *
+          champions.length
+        );
 
-        toast.textContent = message;
-        toast.classList.add("show");
-
-        toastTimer =
-          window.setTimeout(function () {
-            toast.classList.remove("show");
-          }, 3500);
-      }
-
-      /*
-        색종이 효과
-      */
-
-      function createConfetti() {
-        const colors = [
-          "#ff4655",
-          "#caff3d",
-          "#ffffff",
-          "#48ffe1",
-          "#ff9d35"
+      const selectedChampion =
+        champions[
+          selectedIndex
         ];
 
-        for (
-          let index = 0;
-          index < 65;
-          index++
-        ) {
-          const particle =
-            document.createElement("span");
+      selectedYear =
+        selectedChampion.year;
 
-          particle.className = "confetti";
+      /*
+        선택된 칸 중앙이 위쪽 포인터에 오도록
+        최종 회전 각도를 계산합니다.
+      */
 
-          particle.style.left =
-            Math.random() * 100 + "vw";
+      const targetAngle =
+        (
+          360 -
+          selectedIndex *
+          60
+        ) % 360;
 
-          particle.style.background =
-            colors[
-              Math.floor(
-                Math.random() * colors.length
-              )
-            ];
+      const currentNormalized =
+        (
+          currentRotation %
+          360 +
+          360
+        ) % 360;
 
-          particle.style.animationDelay =
-            Math.random() * 0.6 + "s";
+      const alignmentDelta =
+        (
+          targetAngle -
+          currentNormalized +
+          360
+        ) % 360;
 
-          particle.style.animationDuration =
-            2 + Math.random() * 1.6 + "s";
+      const extraTurns =
+        9 +
+        Math.floor(
+          Math.random() * 3
+        );
 
-          particle.style.setProperty(
-            "--drift",
-            -140 + Math.random() * 280 + "px"
+      const rotationDelta =
+        extraTurns *
+        360 +
+        alignmentDelta;
+
+      currentRotation +=
+        rotationDelta;
+
+      const spinDuration =
+        7200;
+
+      wheelRotator.style.transition =
+        `transform ${spinDuration}ms ` +
+        `cubic-bezier(0.08, 0.74, 0.12, 1)`;
+
+      startTickSequence(
+        spinDuration
+      );
+
+      requestAnimationFrame(
+        () => {
+          requestAnimationFrame(
+            () => {
+              wheelRotator
+                .style
+                .transform =
+                  `rotate(${currentRotation}deg)`;
+            }
           );
+        }
+      );
 
-          document.body.appendChild(particle);
+      /*
+        transitionend에 의존하지 않고 타이머로 종료합니다.
+        따라서 모바일이나 GitHub Pages에서도 안정적으로
+        모의 로그인 창이 열립니다.
+      */
 
-          window.setTimeout(function () {
-            particle.remove();
-          }, 4500);
+      spinFinishTimer =
+        window.setTimeout(
+          () => {
+            finishSpin(
+              selectedChampion
+            );
+          },
+          spinDuration + 100
+        );
+    }
+
+    function finishSpin(
+      selectedChampion
+    ) {
+      if (!isSpinning) {
+        return;
+      }
+
+      isSpinning = false;
+      tickSequenceId++;
+
+      resultValue.textContent =
+        `CHAMPIONS ${selectedChampion.year}`;
+
+      sequenceStatus.textContent =
+        "SEQUENCE COMPLETE";
+
+      sequenceStatus.classList.remove(
+        "active"
+      );
+
+      spinButtonText.textContent =
+        "결과 확정";
+
+      loginOpenTimer =
+        window.setTimeout(
+          () => {
+            openDemoLogin(
+              selectedChampion.year
+            );
+          },
+          800
+        );
+    }
+
+    /* ==================================================
+       모의 로그인 열기
+    ================================================== */
+
+    function openDemoLogin(year) {
+      selectedYear = year;
+
+      loginResult.textContent =
+        `SELECTED // CHAMPIONS ${year}`;
+
+      demoIdInput.value = "";
+      demoPasswordInput.value = "";
+
+      demoMessage.textContent = "";
+
+      demoMessage.classList.remove(
+        "error"
+      );
+
+      demoLoginButton.disabled =
+        false;
+
+      demoLoginButton.textContent =
+        "모의 로그인 실행";
+
+      loginModal.classList.add(
+        "active"
+      );
+
+      loginModal.setAttribute(
+        "aria-hidden",
+        "false"
+      );
+
+      document.body.classList.add(
+        "modal-open"
+      );
+
+      window.setTimeout(
+        () => {
+          demoIdInput.focus();
+        },
+        320
+      );
+    }
+
+    /* ==================================================
+       모의 로그인 닫기
+    ================================================== */
+
+    function closeDemoLogin() {
+      window.clearTimeout(
+        demoLoginTimer
+      );
+
+      loginModal.classList.remove(
+        "active"
+      );
+
+      loginModal.setAttribute(
+        "aria-hidden",
+        "true"
+      );
+
+      document.body.classList.remove(
+        "modal-open"
+      );
+
+      demoIdInput.value = "";
+      demoPasswordInput.value = "";
+
+      demoMessage.textContent = "";
+
+      demoMessage.classList.remove(
+        "error"
+      );
+
+      demoLoginButton.disabled =
+        false;
+
+      demoLoginButton.textContent =
+        "모의 로그인 실행";
+
+      if (!isSpinning) {
+        spinButton.disabled =
+          false;
+
+        spinButtonText.textContent =
+          "다시 돌리기";
+      }
+    }
+
+    /* ==================================================
+       모의 로그인 실행
+    ================================================== */
+
+    function executeDemoLogin() {
+      /*
+        실제 네트워크 요청은 실행하지 않습니다.
+        fetch, 쿠키, localStorage도 사용하지 않습니다.
+      */
+
+      const demoId =
+        demoIdInput.value.trim();
+
+      const hasDemoPassword =
+        demoPasswordInput.value
+          .length > 0;
+
+      demoMessage.textContent = "";
+
+      demoMessage.classList.remove(
+        "error"
+      );
+
+      if (!demoId) {
+        demoMessage.textContent =
+          "연출용 아이디를 입력해주세요.";
+
+        demoMessage.classList.add(
+          "error"
+        );
+
+        demoIdInput.focus();
+        return;
+      }
+
+      if (!hasDemoPassword) {
+        demoMessage.textContent =
+          "실제 비밀번호가 아닌 임의의 모의 문구를 입력해주세요.";
+
+        demoMessage.classList.add(
+          "error"
+        );
+
+        demoPasswordInput.focus();
+        return;
+      }
+
+      /*
+        비밀번호 입력값은 확인 즉시 제거합니다.
+      */
+
+      demoPasswordInput.value = "";
+
+      demoLoginButton.disabled =
+        true;
+
+      demoLoginButton.textContent =
+        "모의 인증 확인 중...";
+
+      demoMessage.textContent =
+        "로컬 모의 프로토콜을 확인하고 있습니다...";
+
+      window.clearTimeout(
+        demoLoginTimer
+      );
+
+      demoLoginTimer =
+        window.setTimeout(
+          () => {
+            demoLoginButton.disabled =
+              false;
+
+            demoLoginButton.textContent =
+              "모의 로그인 완료";
+
+            demoMessage.textContent =
+              `모의 로그인 완료 — ${demoId} / ` +
+              `CHAMPIONS ${selectedYear}. ` +
+              `입력 정보는 저장되거나 전송되지 않았습니다.`;
+          },
+          900
+        );
+    }
+
+    /* ==================================================
+       이벤트
+    ================================================== */
+
+    goRouletteButton.addEventListener(
+      "click",
+      () => {
+        document
+          .getElementById(
+            "roulette"
+          )
+          .scrollIntoView({
+            behavior: "smooth",
+            block: "start"
+          });
+      }
+    );
+
+    spinButton.addEventListener(
+      "click",
+      spinWheel
+    );
+
+    closeLoginButton.addEventListener(
+      "click",
+      event => {
+        event.preventDefault();
+        event.stopPropagation();
+
+        closeDemoLogin();
+      }
+    );
+
+    /*
+      모의 로그인 버튼에 click 이벤트를 직접 연결합니다.
+      type="button"이므로 폼 자동 제출이나 새로고침이 없습니다.
+    */
+
+    demoLoginButton.addEventListener(
+      "click",
+      event => {
+        event.preventDefault();
+        event.stopPropagation();
+
+        executeDemoLogin();
+      }
+    );
+
+    /*
+      모바일 일부 환경을 위한 포인터 이벤트 보조 처리입니다.
+      실제 실행은 click 이벤트에서 한 번만 처리됩니다.
+    */
+
+    demoLoginButton.addEventListener(
+      "pointerdown",
+      () => {
+        demoLoginButton.style
+          .transform =
+            "translateY(1px)";
+      }
+    );
+
+    demoLoginButton.addEventListener(
+      "pointerup",
+      () => {
+        demoLoginButton.style
+          .transform = "";
+      }
+    );
+
+    demoLoginButton.addEventListener(
+      "pointercancel",
+      () => {
+        demoLoginButton.style
+          .transform = "";
+      }
+    );
+
+    /*
+      입력창에서 Enter를 눌러도 실행됩니다.
+    */
+
+    [
+      demoIdInput,
+      demoPasswordInput
+    ].forEach(input => {
+      input.addEventListener(
+        "keydown",
+        event => {
+          if (
+            event.key === "Enter"
+          ) {
+            event.preventDefault();
+
+            executeDemoLogin();
+          }
+        }
+      );
+    });
+
+    /*
+      모달의 어두운 바깥 영역을 직접 눌렀을 때만 닫습니다.
+      카드나 버튼을 눌렀을 때는 닫히지 않습니다.
+    */
+
+    loginModal.addEventListener(
+      "click",
+      event => {
+        if (
+          event.target ===
+          loginModal
+        ) {
+          closeDemoLogin();
         }
       }
-    });
+    );
+
+    document.addEventListener(
+      "keydown",
+      event => {
+        if (
+          event.key ===
+            "Escape" &&
+          loginModal.classList
+            .contains("active")
+        ) {
+          closeDemoLogin();
+        }
+      }
+    );
+
+    /* ==================================================
+       초기 실행
+    ================================================== */
+
+    createWheel();
   </script>
 </body>
 </html>
